@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}{{ category_name }} Collection | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/category.css' %}">
+
+<section class="cars-page" style="max-width: 1300px; margin: 0 auto;">
+    <!-- Hero / Header -->
+    <div class="category-hero">
+        <div class="category-badge">Bespoke Collection</div>
+        <h2 class="category-title">{{ category.name }} Fleet</h2>
+        <p class="category-subtitle">Explore our hand-picked selection of world-class {{ category.name|lower }}s,
+            engineered for uncompromising excellence.</p>
+    </div>
+
+    <!-- Masonry Flex Gallery -->
+    <div class="category-gallery">
+        {% for car in cars %}
+        <div class="gallery-card">
+
+            <!-- Status/Price Tag -->
+            <div class="gallery-price-tag">
+                ₹{{ car.price|floatformat:"0" }}
+            </div>
+
+            <!-- Image Section -->
+            <div class="gallery-img-wrapper">
+                {% if car.car_image %}
+                <img src="{{ car.car_image.url }}" alt="{{ car.brand }} {{ car.model }}">
+                {% else %}
+                <img src="{% static 'images/placeholder-car.png' %}" alt="Placeholder" style="filter: brightness(0.7);">
+                {% endif %}
+            </div>
+
+            <!-- Premium Info Layout -->
+            <div class="gallery-info">
+                <div class="gallery-brand">{{ car.brand }}</div>
+                <div class="gallery-model">{{ car.model }}</div>
+
+                <!-- Specs row -->
+                <div class="gallery-specs">
+                    <div class="spec-block">
+                        <i class="fas fa-gas-pump"></i>
+                        <span>{{ car.fuel_type|slice:":4" }}</span>
+                    </div>
+                    <div class="spec-block">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>{{ car.mileage }}</span>
+                    </div>
+                    <div class="spec-block">
+                        <i class="far fa-calendar-alt"></i>
+                        <span>{{ car.launch_year }}</span>
+                    </div>
+                    <div class="spec-block">
+                        <i class="fas fa-cog"></i>
+                        <span>{{ car.transmission|slice:":4" }}</span>
+                    </div>
+                </div>
+
+                <!-- Call to Actions -->
+                <div class="gallery-actions d-flex gap-2">
+                    <a href="{% url 'cars:car_detail' car.vin %}" class="gallery-btn">
+                        View Mastery
+                    </a>
+                    <a href="{% url 'cars:add_to_compare' car.id %}" class="gallery-btn"
+                        style="width: 50px; padding: 14px 0;">
+                        <i class="fas fa-balance-scale"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="fs-1 mb-4">🏜️</div>
+            <h3 class="text-white-50">No {{ category.name }} models currently secured.</h3>
+            <p class="text-muted">Our collection is continuously curated. Explore available masterpieces.</p>
+            <a href="{% url 'cars:all_cars' %}" class="login-btn mt-3">Explore All Cars</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

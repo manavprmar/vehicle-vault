@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="glass-card p-5 rounded-4 shadow-lg border-0" style="background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(148,163,184,0.16) !important;">
+                <div class="text-center mb-5">
+                    <div class="badge bg-primary-subtle text-primary smallest fw-800 mb-2 px-3 rounded-pill uppercase">Deal Prosposal</div>
+                    <h2 class="fw-800 text-white">Secure Negotiation</h2>
+                    <p class="text-white-50">Propose your terms for the <strong>{{ listing.car }}</strong></p>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="form-label text-white-50 fw-700 smallest text-uppercase">Proposed Price (₹)</label>
+                        <input type="number" name="offered_price" class="form-control form-control-lg bg-dark border-0 text-white rounded-3 py-3" required value="{{ listing.price }}">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-white-50 fw-700 smallest text-uppercase">Private Message to Seller</label>
+                        <textarea name="message" class="form-control bg-dark border-0 text-white rounded-3 py-3" rows="4" placeholder="Optional: add any notes or contingencies..."></textarea>
+                    </div>
+
+                    <div class="d-grid gap-3">
+                        <button type="submit" class="btn btn-accent btn-lg py-3 fw-800 rounded-pill shadow-lg transition-all">Transmit Offer 🚀</button>
+                        <a href="{% url 'cars:car_detail' listing.car.vin %}" class="btn btn-outline-light py-3 fw-700 rounded-pill border-0">Cancel Negotiation</a>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="mt-4 p-4 rounded-4" style="background: rgba(255,255,255,0.96); border: 1px solid rgba(148,163,184,0.16); box-shadow: 0 12px 24px rgba(15,23,42,0.04);">
+                <div class="d-flex gap-3 align-items-center">
+                    <div class="text-accent fs-4"><i class="fas fa-shield-check"></i></div>
+                    <div class="smallest text-white-50">Your offer will be transmitted securely to the seller's executive dashboard for immediate review.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

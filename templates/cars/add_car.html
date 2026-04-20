@@ -1,0 +1,289 @@
+﻿{% extends 'base.html' %}
+{% block title %}{% if car %}Refine Listing{% else %}Create New Listing{% endif %} | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="dashboard-container">
+    <div class="section-header">
+        <div class="badge bg-primary-subtle text-primary mb-3"
+            style="border-radius: 20px; padding: 8px 20px; font-weight: 600; letter-spacing: 1px;">INVENTORY SYSTEM
+        </div>
+        <h2 class="text-white">{% if car %}Refine Vehicle Details{% else %}Add to Collection{% endif %}</h2>
+        <p class="text-white-50">{% if car %}Update the technical specifications for your listing.{% else %}Inject a new
+            high-performance
+            vehicle into the vault inventory.{% endif %}</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="premium-form-card shadow-lg p-5"
+                style="background: var(--bg-card); border-radius: 40px; border: 1px solid var(--glass-border); position: relative; overflow: hidden;">
+                <div class="form-glass-glow"></div>
+
+                <form method="POST" enctype="multipart/form-data" class="position-relative">
+                    {% csrf_token %}
+
+                    {% if car_form.non_field_errors or car_form.errors %}
+                    <div class="alert border-0 rounded-4 mb-4"
+                        style="background: rgba(239, 68, 68, 0.12); color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.3) !important;">
+                        <div class="fw-bold mb-2">Please fix these issues before deploying the listing:</div>
+                        {{ car_form.non_field_errors }}
+                        {% for field in car_form %}
+                        {% if field.errors %}
+                        <div class="small">{{ field.label }}: {{ field.errors|striptags }}</div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="row g-4">
+                        <!-- MANDATORY SECTION -->
+                        <div class="col-12 border-bottom border-secondary mb-4 pb-2">
+                            <h4 class="fw-800 text-accent mb-0">Core Specifications</h4>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">VIN / CHASSIS NO.</label>
+                            {{ car_form.vin }}
+                            {% if car_form.vin.errors %}<div class="text-danger small mt-1">{{ car_form.vin.errors }}
+                            </div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">MANUFACTURER</label>
+                            {{ car_form.brand }}
+                            {% if car_form.brand.errors %}<div class="text-danger small mt-1">{{ car_form.brand.errors
+                                }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">MODEL NAME</label>
+                            {{ car_form.model }}
+                            {% if car_form.model.errors %}<div class="text-danger small mt-1">{{ car_form.model.errors
+                                }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">CATEGORY</label>
+                            {{ car_form.category }}
+                            {% if car_form.category.errors %}<div class="text-danger small mt-1">{{
+                                car_form.category.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">LAUNCH YEAR</label>
+                            {{ car_form.launch_year }}
+                            {% if car_form.launch_year.errors %}<div class="text-danger small mt-1">{{
+                                car_form.launch_year.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">FUEL ARCHITECTURE</label>
+                            {{ car_form.fuel_type }}
+                            {% if car_form.fuel_type.errors %}<div class="text-danger small mt-1">{{
+                                car_form.fuel_type.errors }}</div>{% endif %}
+                        </div>
+
+                        <!-- PERFORMANCE SECTION -->
+                        <div class="col-12 border-bottom border-secondary mt-5 mb-4 pb-2">
+                            <h4 class="fw-800 text-accent mb-0">Performance & Value</h4>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">LIST PRICE (â‚¹)</label>
+                            {{ car_form.price }}
+                            {% if car_form.price.errors %}<div class="text-danger small mt-1">{{ car_form.price.errors
+                                }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">RANGE / MILEAGE (KM/L)</label>
+                            {{ car_form.mileage }}
+                            {% if car_form.mileage.errors %}<div class="text-danger small mt-1">{{
+                                car_form.mileage.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">FLEET STOCK</label>
+                            {{ car_form.stock }}
+                            {% if car_form.stock.errors %}<div class="text-danger small mt-1">{{ car_form.stock.errors
+                                }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">TRANSMISSION</label>
+                            {{ car_form.transmission }}
+                            {% if car_form.transmission.errors %}<div class="text-danger small mt-1">{{
+                                car_form.transmission.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <label class="form-label fw-600 small text-white-50">SEATING CAPACITY</label>
+                            {{ car_form.seating_capacity }}
+                            {% if car_form.seating_capacity.errors %}<div class="text-danger small mt-1">{{
+                                car_form.seating_capacity.errors }}</div>{% endif %}
+                        </div>
+
+                        <!-- MEDIA SECTION -->
+                        <div class="col-12 border-bottom border-secondary mt-5 mb-4 pb-2">
+                            <h4 class="fw-800 text-accent mb-0">Visual Presentation</h4>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-600 small text-white-50">PRIMARY COVER IMAGE</label>
+                            <div class="image-upload-container p-4 rounded-4 text-center"
+                                style="background: rgba(255,255,255,0.02); border: 2px dashed var(--glass-border); transition: var(--transition);">
+                                <input type="file" name="images" id="id_images" class="form-control d-none"
+                                    multiple onchange="previewImages(this)">
+                                <label for="id_images" class="cursor-pointer">
+                                    <div id="image_preview_box" class="mb-3 d-none d-flex flex-wrap justify-content-center gap-2">
+                                        <!-- Javascript will inject preview images here -->
+                                    </div>
+                                    <div id="upload_placeholder">
+                                        <div class="fs-1 mb-2 text-accent">ðŸ“¸</div>
+                                        <p class="mb-1 fw-700 text-white" id="upload_text_main">Select a High-Resolution Gallery</p>
+                                        <p class="smallest text-white-50 mb-0">Drag and drop or click to browse multiple images</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <div class="d-flex gap-4">
+                                <div
+                                    class="form-check form-switch card-switch p-3 px-5 rounded-4 border border-secondary">
+                                    {{ car_form.is_upcoming }}
+                                    <label class="form-check-label ms-2 fw-bold small">UPCOMING PREVIEW</label>
+                                </div>
+                                <div
+                                    class="form-check form-switch card-switch p-3 px-5 rounded-4 border border-secondary">
+                                    {{ car_form.is_electric }}
+                                    <label class="form-check-label ms-2 fw-bold small">ELECTRIC VEHICLE</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-5 pt-4">
+                            <a href="{% url 'cars:inventory' %}"
+                                class="btn btn-link text-muted me-4 text-decoration-none fw-600">Cancel & Return</a>
+                            <button type="submit" class="login-btn px-5 py-3"
+                                style="font-weight: 800; font-size: 1.1rem; min-width: 250px;">
+                                {% if car %}Synchronize Changes{% else %}Deploy Listing{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .premium-form-card {
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-glass-glow {
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+        opacity: 0.05;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .card-switch {
+        background: rgba(255, 255, 255, 0.02);
+        transition: var(--transition);
+    }
+
+    .card-switch:hover {
+        background: rgba(56, 189, 248, 0.05);
+        border-color: var(--accent) !important;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .image-upload-container:hover {
+        border-color: var(--accent) !important;
+        background: rgba(56, 189, 248, 0.05) !important;
+    }
+
+    input.form-control,
+    select.form-select {
+        background: rgba(2, 6, 23, 0.4) !important;
+        border: 1px solid var(--glass-border);
+        color: #fff !important;
+        padding: 12px 18px;
+        border-radius: 14px;
+        transition: var(--transition);
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+    select.form-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2338bdf8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+        background-repeat: no-repeat !important;
+        background-position: right 1rem center !important;
+        background-size: 16px 12px !important;
+    }
+
+    input.form-control:focus,
+    select.form-select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+    }
+
+    .form-check-input {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: var(--glass-border);
+    }
+
+    .form-check-input:checked {
+        background-color: var(--accent);
+        border-color: var(--accent);
+    }
+</style>
+
+<script>
+    function previewImages(input) {
+        const previewBox = document.getElementById('image_preview_box');
+        const placeholder = document.getElementById('upload_placeholder');
+        const uploadTextMain = document.getElementById('upload_text_main');
+
+        if (input.files && input.files.length > 0) {
+            previewBox.innerHTML = ''; // Clear previous
+            previewBox.classList.remove('d-none');
+            
+            // Limit preview to first 3 to save UI space
+            const maxPreview = Math.min(input.files.length, 3);
+            for(let i=0; i<maxPreview; i++) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.className = "img-fluid rounded-3 shadow-lg";
+                    img.style.maxHeight = "150px";
+                    img.style.objectFit = "cover";
+                    previewBox.appendChild(img);
+                }
+                reader.readAsDataURL(input.files[i]);
+            }
+            
+            uploadTextMain.innerHTML = `<span class="text-success">${input.files.length} Asset(s) Selected for Upload</span>`;
+        } else {
+            previewBox.innerHTML = '';
+            previewBox.classList.add('d-none');
+            placeholder.classList.remove('d-none');
+            uploadTextMain.textContent = "Select a High-Resolution Gallery";
+        }
+    }
+</script>
+
+{% endblock %}

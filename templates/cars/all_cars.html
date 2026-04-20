@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+{% block title %}Automotive Portal | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/discovery.css' %}">
+<style>
+    /* Custom scrollbar for dynamic sidebar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.14);
+        border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.22);
+    }
+
+    .upcoming-list-item:hover {
+        transform: translateX(-5px);
+        background: #f8fbff !important;
+        border-color: var(--accent) !important;
+        box-shadow: -5px 5px 15px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .upcoming-list-item {
+        transition: all 0.3s ease;
+    }
+
+    @keyframes pulse-soft {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .pulse-badge {
+        animation: pulse-soft 2s infinite;
+        background: linear-gradient(135deg, #e11d48, #be123c) !important;
+    }
+</style>
+
+<div class="portal-container py-4">
+    <!-- Main Content Row -->
+    <div class="row g-4">
+        <!-- Main Content: Discovery & Listings -->
+        <div class="col-lg-8">
+            <!-- Brand Showcase -->
+            <section class="brand-showcase mb-5 reveal">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <div class="badge bg-primary-subtle text-primary smallest fw-800 mb-2 px-3 rounded-pill"
+                            style="letter-spacing: 1px;">PREMIUM PARTNERS</div>
+                        <h2 class="fw-800 m-0 text-white" style="font-size: 1.7rem; letter-spacing: -1px;">All Brands
+                            <span class="text-white-50 ms-2" style="font-weight: 400;">({{ brand_showcase|length }}
+                                Manufacturers)</span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="brand-grid shadow-lg">
+                    {% for brand in brand_showcase %}
+                    <div class="brand-item" onclick="window.location.href='?brand={{ brand.name }}'">
+                        {% if brand.logo_url %}
+                        <img src="{{ brand.logo_url }}" class="brand-logo-placeholder p-2" style="object-fit: contain;">
+                        {% elif brand.static_file %}
+                        <img src="{% static 'images/' %}{{ brand.static_file }}" class="brand-logo-placeholder p-2" style="object-fit: contain;">
+                        {% else %}
+                        <div class="brand-logo-placeholder">{{ brand.name|slice:":1" }}</div>
+                        {% endif %}
+                        <span>{{ brand.name }}</span>
+                    </div>
+                    {% empty %}
+                    <div class="p-4 text-center w-100 text-muted smallest">No brands added in admin.</div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Discovery Pills Section -->
+            <section class="discovery-pills mb-5 reveal reveal-delay-1">
+                <div class="glass-pills-box p-4">
+                    <h4 class="fw-800 mb-4 text-white" style="font-size: 1.3rem;">Elite Discovery Hub</h4>
+                    <ul class="nav nav-tabs border-0 mb-4 gap-4" id="discoveryTabs">
+                        <li class="nav-item"><a class="nav-link active p-0 fw-800 text-uppercase smallest"
+                                data-bs-toggle="tab" href="#budget">Budget</a></li>
+                        <li class="nav-item"><a class="nav-link p-0 fw-800 text-uppercase smallest text-muted"
+                                data-bs-toggle="tab" href="#bodyType">Body Type</a></li>
+                        <li class="nav-item"><a class="nav-link p-0 fw-800 text-uppercase smallest text-muted"
+                                data-bs-toggle="tab" href="#fuelType">Fuel Type</a></li>
+                        <li class="nav-item"><a class="nav-link p-0 fw-800 text-uppercase smallest text-muted"
+                                data-bs-toggle="tab" href="#transmission">Transmission</a></li>
+                        <li class="nav-item"><a class="nav-link p-0 fw-800 text-uppercase smallest text-muted"
+                                data-bs-toggle="tab" href="#seating">Seating</a></li>
+                        <li class="nav-item"><a class="nav-link p-0 fw-800 text-uppercase smallest text-muted"
+                                data-bs-toggle="tab" href="#popular">Trending</a></li>
+                    </ul>
+                    <div class="tab-content" id="discoveryTabContent">
+                        <!-- Budget Tab -->
+                        <div class="tab-pane fade show active" id="budget">
+                            <p class="smallest text-muted mb-3"><i class="fas fa-lightbulb text-accent me-1"></i> Expert
+                                Advice: High-performance luxury vehicles in the 50L+ bracket maintain the best resale
+                                value in the Vault.</p>
+                            <div class="pill-cloud d-flex flex-wrap gap-2">
+                                {% for pill in budget_pills %}
+                                <div class="pill-item" onclick="window.location.href='?budget={{ pill.filter_value }}'">
+                                    {{ pill.label }}</div>
+                                {% empty %}
+                                <div class="smallest text-muted opacity-50">Manage budget tiers in administration.</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% include 'components/discovery_tabs_content.html' %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured section -->
+            <section class="featured-cars-section mb-5 reveal reveal-delay-2">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-800 m-0 text-white" style="font-size: 1.5rem;">Featured Curations</h2>
+                    <div class="featured-tabs d-flex gap-4">
+                        <span class="text-accent fw-800 border-bottom border-accent pb-1"
+                            style="cursor: pointer;">Trending</span>
+                        <a href="{% url 'cars:upcoming_cars' %}"
+                            class="text-white-50 fw-800 text-decoration-none hover-text-accent transition-all">Upcoming</a>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    {% for car in cars|slice:":6" %}
+                    <div class="col-md-6">
+                        <div class="portal-car-card rounded-4 overflow-hidden shadow-sm h-100">
+                            <div class="img-container position-relative rounded-3 overflow-hidden"
+                                style="height: 180px; background: #eef5ff;">
+                                {% if car.car_image %}
+                                <img src="{{ car.car_image.url }}" class="w-100 h-100" style="object-fit: contain;">
+                                {% else %}
+                                <img src="{% static 'images/placeholder-car.png' %}" class="w-100 h-100"
+                                    style="object-fit: contain; filter: brightness(0.8);">
+                                {% endif %}
+                                <div class="position-absolute top-0 start-0 m-2 d-flex flex-column gap-1">
+                                    <div class="tag-new py-1 px-3 text-white smallest fw-900 rounded-pill shadow-sm d-inline-block"
+                                        style="background: rgba(255,255,255,0.95); color: var(--text-main); backdrop-filter: blur(4px); border: 1px solid rgba(148,163,184,0.16); width: fit-content;">
+                                        VAULT VERIFIED</div>
+                                    {% if car.is_upcoming %}
+                                    <div class="tag-new py-1 px-3 text-dark smallest fw-900 rounded-pill shadow-sm bg-warning d-inline-block"
+                                        style="width: fit-content;">
+                                        UPCOMING</div>
+                                    {% endif %}
+                                    {% if car.is_electric %}
+                                    <div class="tag-new py-1 px-3 text-dark smallest fw-900 rounded-pill shadow-sm bg-info d-inline-block"
+                                        style="width: fit-content;">
+                                        ELECTRIC</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <h6 class="fw-800 mb-1 text-white">{{ car.brand }} {{ car.model }}</h6>
+                                <div class="price-narrative mb-1 fw-800">&#8377;{{ car.price }} <span
+                                        class="text-white-50">onwards</span></div>
+                                <p class="smallest text-white-50 mb-3">Avg. Ex-Showroom price</p>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'cars:car_detail' car.vin %}"
+                                        class="btn btn-outline-accent btn-sm flex-grow-1 fw-800 rounded-pill py-2">View
+                                        Mastery
+                                        <i class="fas fa-angle-right ms-1"></i></a>
+                                    {% if user.is_authenticated and user.role == 'Buyer' %}
+                                    <a href="{% url 'cars:schedule_test_drive' car.vin %}"
+                                        class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 35px; height: 35px; border-color: rgba(148,163,184,0.22) !important;"
+                                        title="Request Test Drive">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </a>
+                                    {% endif %}
+                                    <a href="{% url 'cars:add_to_compare' car.id %}"
+                                        class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 35px; height: 35px; border-color: rgba(148,163,184,0.22) !important;"
+                                        title="Add to Compare">
+                                        <i class="fas fa-balance-scale"></i>
+                                    </a>
+                                    {% if user.is_authenticated %}
+                                    <a href="{% url 'cars:toggle_wishlist' car.id %}?next={{ request.path }}"
+                                        class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 35px; height: 35px; border-color: rgba(148,163,184,0.22) !important;"
+                                        title="{% if car.id in wishlisted_ids %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}">
+                                        {% if car.id in wishlisted_ids %}<i class="fas fa-heart"></i>{% else %}<i class="far fa-heart"></i>{% endif %}
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-5 text-white-50">Our curators are currently selecting new
+                        masterpieces.</div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Automotive Visual Gallery: Static Collection -->
+            <section class="portal-gallery mb-5 reveal">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-800 m-0 text-white" style="font-size: 1.5rem;">Collection Spotlight</h2>
+                    <span class="smallest text-accent fw-800">Authentic Visuals</span>
+                </div>
+                <div class="row g-3">
+                    {% for img in static_car_images %}
+                    <div class="col-md-4">
+                        <div class="gallery-card rounded-4 overflow-hidden position-relative shadow-sm"
+                            style="height: 140px; border: 1px solid rgba(148,163,184,0.16); background: #eef5ff;">
+                            <img src="{% static 'images/' %}{{ img.file }}" class="w-100 h-100" style="object-fit: contain; transition: transform 0.5s ease;">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-2"
+                                style="background: linear-gradient(transparent, rgba(255,255,255,0.96));">
+                                <div class="text-white smallest fw-700 text-center">{{ img.name }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-4 text-white-50">No gallery images found in static assets.</div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar: Upcoming Vehicles Vertical Showcase -->
+        <div class="col-lg-4">
+            <div class="position-sticky" style="top: 100px; z-index: 10;">
+                <section class="upcoming-showcase px-2 reveal reveal-delay-2" style="border-left: 1px solid var(--glass-border);">
+                    <div class="d-flex justify-content-between align-items-center mb-4 ps-3">
+                        <h2 class="fw-800 m-0 text-white" style="font-size: 1.5rem;">Upcoming in 2026</h2>
+                        <span class="badge bg-accent text-white rounded-pill px-3 py-2 shadow-sm pulse-badge">Live
+                            Radar</span>
+                    </div>
+
+                    <div class="row g-4 m-0 custom-scrollbar pe-2"
+                        style="max-height: calc(100vh - 180px); overflow-y: auto; overflow-x: hidden;">
+                        <div class="col-lg-12 p-0">
+                            {% for car in cars %}
+                            <div class="upcoming-list-item p-3 rounded-4 mb-3 d-flex flex-column gap-3 shadow-sm"
+                                style="background: rgba(255,255,255,0.96); border: 1px solid var(--glass-border); box-shadow: 0 12px 24px rgba(15,23,42,0.04);">
+                                <div class="d-flex gap-3 align-items-center">
+                                    <div class="upcoming-img rounded-3 overflow-hidden"
+                                        style="width: 100px; height: 70px; flex-shrink: 0; border: 1px solid var(--glass-border); background: #eef5ff;">
+                                        {% if car.car_image %}
+                                        <img src="{{ car.car_image.url }}" class="w-100 h-100"
+                                            style="object-fit: contain;">
+                                        {% else %}
+                                        <img src="{% static 'images/placeholder-car.png' %}" class="w-100 h-100"
+                                            style="object-fit: contain; filter: brightness(0.8);">
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="badge bg-warning-subtle text-warning smallest fw-800 mb-1"
+                                            style="background: rgba(255, 193, 7, 0.1) !important;">Unveiled: 26 Feb
+                                        </div>
+                                        <h6 class="fw-800 mb-1"><a href="{% url 'cars:car_detail' car.vin %}"
+                                                class="text-white text-decoration-none">{{ car.brand }} {{ car.model }}
+                                                <i class="fas fa-angle-right ms-1"></i></a>
+                                        </h6>
+                                        <div class="fw-800 small text-accent">&#8377;{{ car.price }} <br><span
+                                                class="text-muted smallest fw-500">Estimated Price</span></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-1 pt-2"
+                                    style="border-top: 1px solid rgba(148,163,184,0.16);">
+                                    <a href="{% url 'cars:add_to_compare' car.id %}"
+                                        class="text-white-50 text-decoration-none smallest hover-text-accent transition-all">
+                                        <i class="fas fa-balance-scale me-1"></i>Compare
+                                    </a>
+                                    {% if user.is_authenticated and user.role == 'Buyer' %}
+                                    <a href="{% url 'cars:schedule_test_drive' car.vin %}"
+                                        class="text-white-50 text-decoration-none smallest hover-text-accent transition-all">
+                                        <i class="fas fa-calendar-check me-1"></i>Test Drive
+                                    </a>
+                                    {% endif %}
+                                    <button class="btn btn-outline-light rounded-pill px-3 py-1 fw-800 small"
+                                        style="font-size: 0.8rem;">Get Alerts</button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div> <!-- Close row g-4 -->
+</div>
+{% endblock %}

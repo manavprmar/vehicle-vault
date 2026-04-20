@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Insurance Quote | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="calc-card p-5 shadow-lg">
+                <div class="text-center mb-5">
+                    <span class="badge bg-success px-3 py-2 rounded-pill mb-3 fw-800">GET A QUOTE</span>
+                    <h1 class="fw-900 text-white mb-2">Shield Your Investment</h1>
+                    <p class="text-muted">Tell us about your masterpiece for a custom protection plan.</p>
+                </div>
+
+                <form id="insuranceQuoteForm">
+                    <!-- Progress Bar -->
+                    <div class="progress mb-5" style="height: 4px; background: rgba(255,255,255,0.05);">
+                        <div class="progress-bar bg-accent" role="progressbar" style="width: 33%;" aria-valuenow="33"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
+                    <!-- Step 1: Vehicle Details -->
+                    <div class="form-step" id="step1">
+                        <h5 class="fw-800 text-white mb-4">Step 1: Vehicle Profile</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="input-group-label">Registration Number</label>
+                                <input type="text"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="MH 01 AX 1234" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">Make & Model</label>
+                                <input type="text"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="BMW M4 Competition" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">Manufacturing Year</label>
+                                <select class="form-select bg-dark border-secondary text-white rounded-3 p-3">
+                                    <option>2024</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
+                                    <option>2021</option>
+                                    <option>Before 2021</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">Previous Policy Status</label>
+                                <select class="form-select bg-dark border-secondary text-white rounded-3 p-3">
+                                    <option>Active</option>
+                                    <option>Expired (within 90 days)</option>
+                                    <option>Expired (over 90 days)</option>
+                                    <option>First Time Insurance</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-5 d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary rounded-pill px-5 py-3 fw-900"
+                                onclick="nextStep(2)">Next: Coverage ➔</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Coverage Type (Hidden Initially) -->
+                    <div class="form-step d-none" id="step2">
+                        <h5 class="fw-800 text-white mb-4">Step 2: Choose Your Shield</h5>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label class="input-group-label">Select Plan Tier</label>
+                                <div class="d-flex flex-column gap-3">
+                                    <label
+                                        class="p-3 rounded-3 border-secondary d-flex align-items-center gap-3 cursor-pointer"
+                                        style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
+                                        <input type="radio" name="plan" value="Basic"
+                                            style="accent-color: var(--accent);">
+                                        <div>
+                                            <div class="fw-800 text-white">Third Party Only</div>
+                                            <div class="smallest text-muted">Mandatory Legal Coverage</div>
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="p-3 rounded-3 border-accent d-flex align-items-center gap-3 cursor-pointer"
+                                        style="background: rgba(56, 189, 248, 0.05); border: 1px solid var(--accent);">
+                                        <input type="radio" name="plan" value="Comprehensive" checked
+                                            style="accent-color: var(--accent);">
+                                        <div>
+                                            <div class="fw-800 text-accent">Comprehensive Protection</div>
+                                            <div class="smallest text-muted">Own Damage + Third Party + Theft</div>
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="p-3 rounded-3 border-secondary d-flex align-items-center gap-3 cursor-pointer"
+                                        style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
+                                        <input type="radio" name="plan" value="ZeroDep"
+                                            style="accent-color: var(--accent);">
+                                        <div>
+                                            <div class="fw-800 text-white">Elite Zero Depreciation</div>
+                                            <div class="smallest text-muted">Full Replacement + Engine Secure</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5 d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-light rounded-pill px-4 py-3 fw-800"
+                                onclick="nextStep(1)">⬅ Back</button>
+                            <button type="button" class="btn btn-primary rounded-pill px-5 py-3 fw-900"
+                                onclick="nextStep(3)">Next: Final Details ➔</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Personal Details (Hidden Initially) -->
+                    <div class="form-step d-none" id="step3">
+                        <h5 class="fw-800 text-white mb-4">Step 3: Personal & Contact</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="input-group-label">Owner Name</label>
+                                <input type="text"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="John Doe" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">Mobile Number</label>
+                                <input type="tel" class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="+91 00000 00000" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="d-flex align-items-center gap-3 cursor-pointer mt-3">
+                                    <input type="checkbox"
+                                        style="width: 20px; height: 20px; accent-color: var(--accent);" required>
+                                    <span class="text-white small">I authorize Vault Shield curators to contact me for
+                                        policy delivery.</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mt-5 d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-light rounded-pill px-4 py-3 fw-800"
+                                onclick="nextStep(2)">⬅ Back</button>
+                            <button type="submit"
+                                class="btn btn-accent rounded-pill px-5 py-3 fw-900 shadow-lg">GENERATE QUOTE</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function nextStep(step) {
+        document.querySelectorAll('.form-step').forEach(s => s.classList.add('d-none'));
+        document.getElementById('step' + step).classList.remove('d-none');
+        const progress = (step / 3) * 100;
+        document.querySelector('.progress-bar').style.width = progress + '%';
+    }
+
+    document.getElementById('insuranceQuoteForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert('Quote request received! Our Vault Shield concierge will contact you with the best rates shortly.');
+        window.location.href = "{% url 'core:car_insurance' %}";
+    });
+</script>
+{% endblock %}

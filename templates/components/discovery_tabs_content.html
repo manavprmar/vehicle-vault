@@ -1,0 +1,65 @@
+<!-- Body Type Tab -->
+<div class="tab-pane fade" id="bodyType">
+    <p class="smallest text-muted mb-3"><i class="fas fa-chart-line text-accent me-1"></i> Market Trend: Premium SUVs
+        and Sportbacks currently represent the highest demand in our curated collection.</p>
+    <div class="pill-cloud d-flex flex-wrap gap-2">
+        {% for pill in body_pills %}
+        <div class="pill-item" onclick="window.location.href='?body_type={{ pill.filter_value }}'">
+            {{ pill.label }}</div>
+        {% empty %}
+        <div class="smallest text-white-50">Configure body classifications in admin.</div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Fuel Type Tab -->
+<div class="tab-pane fade" id="fuelType">
+    <p class="smallest text-white-50 mb-3"><i class="fas fa-leaf text-accent me-1"></i> Sustainability Insight: Our AI
+        models predict a 40% growth in high-end EV demand by year-end.</p>
+    <div class="pill-cloud d-flex flex-wrap gap-2">
+        {% for pill in fuel_pills %}
+        <div class="pill-item" onclick="window.location.href='?fuel={{ pill.filter_value }}'">{{ pill.label }}</div>
+        {% empty %}
+        <div class="smallest text-white-50">Manage fuel architecture in admin.</div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Transmission Tab -->
+<div class="tab-pane fade" id="transmission">
+    <p class="smallest text-white-50 mb-3"><i class="fas fa-cogs text-accent me-1"></i> Precision Choice: Dual-clutch
+        Automatics provide the definitive racing-purity experience for urban drives.</p>
+    <div class="pill-cloud d-flex flex-wrap gap-2">
+        {% for pill in transmission_pills %}
+        <div class="pill-item" onclick="window.location.href='?transmission={{ pill.filter_value }}'">{{ pill.label }}
+        </div>
+        {% empty %}
+        <div class="smallest text-white-50">Calibrate transmission filters in admin.</div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Seating Tab -->
+<div class="tab-pane fade" id="seating">
+    <p class="smallest text-white-50 mb-3"><i class="fas fa-users text-accent me-1"></i> Lifestyle Guidance: Bespoke
+        7-seater configurations are ideal for private luxury travel with extended connectivity.</p>
+    <div class="pill-cloud d-flex flex-wrap gap-2">
+        {% for pill in seating_pills %}
+        <div class="pill-item" onclick="window.location.href='?seating={{ pill.filter_value }}'">{{ pill.label }}</div>
+        {% empty %}
+        <div class="smallest text-white-50">Manage capacity filters in admin.</div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Popular Tab -->
+<div class="tab-pane fade" id="popular">
+    <p class="smallest text-white-50 mb-3"><i class="fas fa-fire text-accent me-1"></i> Vault Heatmap: These surgical
+        categories are currently receiving the highest level of member engagement.</p>
+    <div class="pill-cloud d-flex flex-wrap gap-2">
+        {% for pill in popular_pills %}
+        <div class="pill-item bg-warning-subtle border-warning-subtle text-dark"
+            onclick="window.location.href='?q={{ pill.filter_value }}'">
+            <span class="me-1">🔥</span>{{ pill.label }}
+        </div>
+        {% empty %}
+        <div class="smallest text-white-50">Popular search metrics are tracked automatically.</div>
+        {% endfor %}
+    </div>
+</div>

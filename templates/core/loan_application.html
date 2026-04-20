@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Loan Application | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="calc-card p-5 shadow-lg">
+                <div class="text-center mb-5">
+                    <span class="badge bg-primary px-3 py-2 rounded-pill mb-3 fw-800">APPLICATION PORTAL</span>
+                    <h1 class="fw-900 text-white mb-2">Secure Your Masterpiece</h1>
+                    <p class="text-muted">Complete the form below to begin your elite financing journey.</p>
+                </div>
+
+                <form id="loanAppForm">
+                    <!-- Progress Bar -->
+                    <div class="progress mb-5" style="height: 4px; background: rgba(255,255,255,0.05);">
+                        <div class="progress-bar bg-accent" role="progressbar" style="width: 33%;" aria-valuenow="33"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
+                    <!-- Step 1: Personal Details -->
+                    <div class="form-step" id="step1">
+                        <h5 class="fw-800 text-white mb-4">Step 1: Personal Profile</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="input-group-label">Full Name</label>
+                                <input type="text"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="John Doe" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">Email Address</label>
+                                <input type="email"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="john@vault.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">Phone Number</label>
+                                <input type="tel" class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="+91 00000 00000" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">City of Residence</label>
+                                <input type="text"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="Mumbai" required>
+                            </div>
+                        </div>
+                        <div class="mt-5 d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary rounded-pill px-5 py-3 fw-900"
+                                onclick="nextStep(2)">Next: Employment ➔</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Employment Details (Hidden Initially) -->
+                    <div class="form-step d-none" id="step2">
+                        <h5 class="fw-800 text-white mb-4">Step 2: Professional Profile</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="input-group-label">Employment Type</label>
+                                <select class="form-select bg-dark border-secondary text-white rounded-3 p-3">
+                                    <option>Salaried</option>
+                                    <option>Self-Employed</option>
+                                    <option>Business Owner</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="input-group-label">Monthly Income (In-Hand)</label>
+                                <input type="number"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="₹ 1,00,000" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="input-group-label">Organization / Business Name</label>
+                                <input type="text"
+                                    class="form-control bg-dark border-secondary text-white rounded-3 p-3"
+                                    placeholder="Vault Corp" required>
+                            </div>
+                        </div>
+                        <div class="mt-5 d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-light rounded-pill px-4 py-3 fw-800"
+                                onclick="nextStep(1)">⬅ Back</button>
+                            <button type="button" class="btn btn-primary rounded-pill px-5 py-3 fw-900"
+                                onclick="nextStep(3)">Next: Finalize ➔</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Final Review (Hidden Initially) -->
+                    <div class="form-step d-none" id="step3">
+                        <h5 class="fw-800 text-white mb-4">Step 3: Verification</h5>
+                        <div class="p-4 rounded-4 mb-4"
+                            style="background: rgba(56, 189, 248, 0.05); border: 1px dashed var(--accent);">
+                            <p class="text-white small mb-0">By clicking submit, you agree to our partner banks' credit
+                                check policies. Our concierge will contact you within 24 hours.</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="d-flex align-items-center gap-3 cursor-pointer">
+                                <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--accent);"
+                                    required>
+                                <span class="text-white small">I confirm the above details are accurate and I accept the
+                                    <a href="{% url 'core:terms' %}" class="text-accent underline-none">terms of
+                                        service</a>.</span>
+                            </label>
+                        </div>
+                        <div class="mt-5 d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-light rounded-pill px-4 py-3 fw-800"
+                                onclick="nextStep(2)">⬅ Back</button>
+                            <button type="submit" class="btn btn-accent rounded-pill px-5 py-3 fw-900 shadow-lg">SUBMIT
+                                APPLICATION</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function nextStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.form-step').forEach(s => s.classList.add('d-none'));
+        // Show current step
+        document.getElementById('step' + step).classList.remove('d-none');
+
+        // Update progress bar
+        const progress = (step / 3) * 100;
+        document.querySelector('.progress-bar').style.width = progress + '%';
+    }
+
+    document.getElementById('loanAppForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert('Thank you! Your application has been submitted. Our concierge team will reach out shortly.');
+        window.location.href = "{% url 'core:car_loan' %}";
+    });
+</script>
+{% endblock %}

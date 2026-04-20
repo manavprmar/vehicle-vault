@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Upcoming Cars 2026 | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="portal-container py-5">
+    <!-- Elite Header -->
+    <div class="elite-header text-center mb-5 pb-4">
+        <div class="badge bg-warning-subtle text-warning mb-3 px-4 py-2 rounded-pill fw-800" style="letter-spacing: 2px; border: 1px solid rgba(255,193,7,0.2);">FUTURE REVELATIONS</div>
+        <h1 class="display-3 fw-900 text-white mb-3" style="letter-spacing: -2px;">Upcoming Masterpieces</h1>
+        <p class="lead text-white opacity-50 mx-auto" style="max-width: 600px;">A curtain-raiser for the most anticipated automotive launches of 2026. Precision engineered, future-ready.</p>
+    </div>
+
+    <!-- Upcoming Grid -->
+    <div class="row g-4">
+        {% for car in cars %}
+        <div class="col-md-6 col-lg-4">
+            <div class="glass-card h-100 p-3 rounded-4 shadow-lg position-relative overflow-hidden" style="background: var(--bg-card); border: 1px solid var(--glass-border); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                <div class="img-container rounded-3 overflow-hidden position-relative mb-4" style="height: 220px;">
+                    {% if car.car_image %}
+                    <img src="{{ car.car_image.url }}" class="w-100 h-100" style="object-fit: cover; filter: brightness(0.7) grayscale(0.2);">
+                    {% endif %}
+                    <div class="position-absolute top-0 start-0 m-3 px-3 py-2 rounded-3 text-white smallest fw-900" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                        EST. LAUNCH: {{ car.launch_year }}
+                    </div>
+                </div>
+
+                <div class="card-content px-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-accent smallest fw-800" style="letter-spacing: 1px;">EXCLUSIVE PREVIEW</span>
+                        <div class="dot-status active"></div>
+                    </div>
+                    <h3 class="h4 fw-800 text-white mb-2">{{ car.brand }} {{ car.model }}</h3>
+                    <div class="price-narrative mb-4">
+                        <span class="text-white h5 fw-800">₹{{ car.price }}</span>
+                        <span class="smallest opacity-50 ms-2">Expected Price</span>
+                    </div>
+
+                    <div class="anticipation-meter mb-4">
+                        <div class="d-flex justify-content-between smallest text-white opacity-50 mb-1">
+                            <span>Market Anticipation</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="progress bg-dark" style="height: 4px; border-radius: 10px;">
+                            <div class="progress-bar" style="width: 95%; background: linear-gradient(90deg, var(--accent), #fff);"></div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-accent rounded-pill fw-800 py-3 mb-2" onclick="alert('Subscription confirmed for {{ car.model }} alerts!')">Get Launch Alerts</button>
+                        <a href="{% url 'cars:car_detail' car.vin %}" class="btn btn-outline-light border-opacity-10 rounded-pill fw-800 py-2 small">Explore Technical Specs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="empty-state-icon mb-4" style="font-size: 4rem; opacity: 0.2;">🚀</div>
+            <h2 class="text-white fw-800">The Future is Being Written</h2>
+            <p class="text-white opacity-50">New previews are currently being cataloged. Check back for 2027 revelations.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.glass-card:hover { transform: translateY(-10px); border-color: var(--accent) !important; }
+.dot-status { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; }
+.btn-accent { background: var(--accent); color: #020617; border: none; }
+.btn-accent:hover { background: #fff; color: #020617; }
+</style>
+
+{% endblock %}

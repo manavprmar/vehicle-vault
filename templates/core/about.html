@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Our Legacy | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="about-page container py-5">
+    <!-- Immersive Hero Section -->
+    <div class="glass-card mb-5 overflow-hidden"
+        style="background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 40px;">
+        <div class="row g-0 align-items-center">
+            <div class="col-lg-6 p-4 p-md-5">
+                <span class="badge bg-primary px-3 py-2 rounded-pill mb-4 fw-800">SINCE 2024</span>
+                <h1 class="display-3 fw-900 text-white mb-4">Engineering the <br><span class="text-accent">Elite
+                        Journey.</span></h1>
+                <p class="lead text-muted mb-5">Vehicle Vault isn't just a marketplace; it's a curated sanctuary for the
+                    world's most exceptional automotive masterpieces.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'cars:all_cars' %}"
+                        class="btn btn-primary rounded-pill px-5 py-3 fw-900 shadow-lg">EXPLORE FLEET</a>
+                    <a href="{% url 'core:contact' %}"
+                        class="btn btn-outline-light rounded-pill px-5 py-3 fw-800">PARTNER WITH US</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-visual h-100"
+                    style="background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80'); background-size: cover; background-position: center; min-height: 550px;">
+                    <div class="h-100 d-flex align-items-center justify-content-center">
+                        <div class="glass-box p-4 text-center backdrop-blur-md rounded-4 border border-white/10 m-5">
+                            <div class="h4 fw-900 text-white mb-0">"Curating Excellence"</div>
+                            <div class="smallest text-muted text-uppercase fw-800 mt-2">The Vault Philosophy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vault Legacy Timeline -->
+    <div class="row mb-5 py-4">
+        <div class="col-12 text-center mb-5">
+            <h2 class="fw-900 text-white">The Vault <span class="text-accent">Legacy</span></h2>
+            <p class="text-muted">A chronicle of our commitment to automotive perfection</p>
+        </div>
+        <div class="col-12">
+            <div class="timeline-container position-relative px-4">
+                <div class="timeline-line position-absolute start-50 translate-middle-x d-none d-md-block"
+                    style="width: 2px; height: 100%; background: linear-gradient(to bottom, transparent, var(--accent), transparent);">
+                </div>
+
+                <div class="row mb-5 align-items-center">
+                    <div class="col-md-5 text-md-end mb-4 mb-md-0">
+                        <div class="calc-card p-4 hover-lift">
+                            <span class="text-accent fw-900 h4 d-block mb-2">2024</span>
+                            <h5 class="fw-800 text-white">The Genesis</h5>
+                            <p class="text-muted small m-0">Launched as a niche sanctuary for supercar aficionados,
+                                focusing on 100% verified digital ownership.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center d-none d-md-block">
+                        <div class="timeline-dot bg-accent rounded-circle shadow-lg mx-auto"
+                            style="width: 16px; height: 16px; border: 4px solid var(--bg-main);"></div>
+                    </div>
+                    <div class="col-md-5 d-none d-md-block"></div>
+                </div>
+
+                <div class="row mb-5 align-items-center">
+                    <div class="col-md-5 d-none d-md-block"></div>
+                    <div class="col-md-2 text-center d-none d-md-block">
+                        <div class="timeline-dot bg-accent rounded-circle shadow-lg mx-auto"
+                            style="width: 16px; height: 16px; border: 4px solid var(--bg-main);"></div>
+                    </div>
+                    <div class="col-md-5 mb-4 mb-md-0">
+                        <div class="calc-card p-4 hover-lift">
+                            <span class="text-accent fw-900 h4 d-block mb-2">2025</span>
+                            <h5 class="fw-800 text-white">Global Reach</h5>
+                            <p class="text-muted small m-0">Expanded across 15+ partner brands and introduced the
+                                200-point precision audit for all listings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-md-5 text-md-end mb-4 mb-md-0">
+                        <div class="calc-card p-4 hover-lift">
+                            <span class="text-accent fw-900 h4 d-block mb-2">Future</span>
+                            <h5 class="fw-800 text-white">Automotive Future</h5>
+                            <p class="text-muted small m-0">Integrating AI-driven valuation models and blockchain
+                                history tracking to redefine collector trust.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center d-none d-md-block">
+                        <div class="timeline-dot bg-accent rounded-circle shadow-lg mx-auto"
+                            style="width: 16px; height: 16px; border: 4px solid var(--bg-main);"></div>
+                    </div>
+                    <div class="col-md-5 d-none d-md-block"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Curation Standards & Stats -->
+    <div class="row g-5 mb-5 align-items-center">
+        <div class="col-lg-6">
+            <h2 class="fw-900 text-white mb-4">Behind the <span class="text-accent">Masterpiece Standard</span></h2>
+            <p class="text-muted mb-5">Our elite technicians don't just inspect; they audit. Every car undergoes a
+                digital and mechanical forensic analysis before it's allowed into our vault.</p>
+
+            <div class="row g-3 mb-5">
+                <div class="col-6">
+                    <div class="p-4 rounded-4 text-center"
+                        style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                        <div class="display-5 fw-900 text-accent mb-1">200+</div>
+                        <div class="smallest text-muted text-uppercase fw-800 tracking-wider">Point Audit</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-4 rounded-4 text-center"
+                        style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                        <div class="display-5 fw-900 text-accent mb-1">99%</div>
+                        <div class="smallest text-muted text-uppercase fw-800 tracking-wider">Precision Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-box p-4 rounded-4 mb-0"
+                style="background: linear-gradient(to right, rgba(56, 189, 248, 0.1), transparent); border-left: 4px solid var(--accent);">
+                <p class="text-white fw-700 italic mb-0">"We bridge the gap between engineering perfection and elite
+                    ownership."</p>
+                <footer class="text-muted smallest mt-2 fw-800">— Curator-in-Chief</footer>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-4">
+                <div class="col-sm-6">
+                    <div class="pillar-card p-4 h-100 hover-lift">
+                        <div class="h1 mb-3">💎</div>
+                        <h5 class="fw-800 text-white">Quality Audit</h5>
+                        <p class="smallest text-muted m-0">Extreme verification of structural and mechanical integrity.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="pillar-card p-4 h-100 hover-lift">
+                        <div class="h1 mb-3">🌎</div>
+                        <h5 class="fw-800 text-white">Global Network</h5>
+                        <p class="smallest text-muted m-0">Connecting rare finds to discerning members worldwide.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="pillar-card p-4 h-100 hover-lift">
+                        <div class="h1 mb-3">⚡</div>
+                        <h5 class="fw-800 text-white">Tech Driven</h5>
+                        <p class="smallest text-muted m-0">AI powered discovery for the modern automotive era.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="pillar-card p-4 h-100 hover-lift">
+                        <div class="h1 mb-3">🛡️</div>
+                        <h5 class="fw-800 text-white">Secure Assets</h5>
+                        <p class="smallest text-muted m-0">Full legal and history verification for absolute peace of
+                            mind.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Stats Row -->
+    <div class="stats-grid mb-5">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="calc-card p-4">
+                    <div class="h2 fw-900 text-white mb-0">₹ 2.5k+</div>
+                    <div class="smallest text-muted text-uppercase fw-800 mt-1">Elite Members</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="calc-card p-4">
+                    <div class="h2 fw-900 text-white mb-0">500+</div>
+                    <div class="smallest text-muted text-uppercase fw-800 mt-1">Verified Units</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="calc-card p-4">
+                    <div class="h2 fw-900 text-white mb-0">15+</div>
+                    <div class="smallest text-muted text-uppercase fw-800 mt-1">Brand Partners</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="calc-card p-4">
+                    <div class="h2 fw-900 text-white mb-0">99.8%</div>
+                    <div class="smallest text-muted text-uppercase fw-800 mt-1">Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Vision CTA -->
+    <div class="text-center py-5 rounded-5 shadow-2xl position-relative overflow-hidden"
+        style="background: radial-gradient(circle at bottom, rgba(56, 189, 248, 0.15), transparent);">
+        <h2 class="fw-900 text-white mb-4">The Future is Exceptional.</h2>
+        <p class="text-muted mb-5 mx-auto" style="max-width: 600px;">Join the elite collective of automotive enthusiasts
+            who demand more than just mobility—they demand a legacy.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'core:signup' %}"
+                class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-900 shadow-lg hover-lift">JOIN THE
+                COLLECTIVE</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-lift {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent) !important;
+    }
+
+    .pillar-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+    }
+
+    .text-accent {
+        color: var(--accent) !important;
+    }
+
+    .smallest {
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+    }
+
+    .italic {
+        font-style: italic;
+    }
+</style>
+{% endblock %}

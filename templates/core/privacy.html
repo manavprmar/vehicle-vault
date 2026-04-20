@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Privacy Governance | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="sticky-top" style="top: 100px;">
+                <h6 class="text-white-50 smallest fw-900 tracking-widest text-uppercase mb-4">Governance Sections</h6>
+                <nav class="privacy-nav flex-column">
+                    <a href="#collection"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">Data
+                        Collection</a>
+                    <a href="#usage"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">Project
+                        Intention & AI</a>
+                    <a href="#security"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">Security
+                        Protocols</a>
+                    <a href="#rights"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">Your
+                        Sovereign Rights</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Privacy Content -->
+        <div class="col-lg-9">
+            <div class="glass-card p-4 p-md-5 rounded-4 shadow-lg"
+                style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+                <!-- Header -->
+                <div class="mb-5 border-bottom border-white/5 pb-4">
+                    <span class="badge bg-primary px-3 py-2 rounded-pill mb-3 fw-800">TRUST & TRANSPARENCY</span>
+                    <h1 class="display-4 fw-900 text-white mb-3">Privacy <span class="text-accent">Governance</span>
+                    </h1>
+                    <p class="text-muted lead">At Vehicle Vault, we treat your data with the same reverence we treat our
+                        world-class automotive masterpieces. This policy reflects our mission to revolutionize elite car
+                        discovery through transparency and precision engineering.</p>
+                </div>
+
+                <!-- Section: Collection -->
+                <section id="collection" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-database"></i></div>
+                        <h3 class="fw-800 text-white m-0">1. Data Collection Architecture</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>Our project is built on the principle of minimal yet meaningful data collection. We capture
+                            data that fuels the elite automotive ecosystem:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-3 d-flex gap-3">
+                                <i class="fas fa-check text-accent mt-1"></i>
+                                <span><strong>Operational Identity:</strong> Encrypted credentials and profile metadata
+                                    to facilitate secure Buyer and Seller interactions.</span>
+                            </li>
+                            <li class="mb-3 d-flex gap-3">
+                                <i class="fas fa-check text-accent mt-1"></i>
+                                <span><strong>Automotive Intelligence:</strong> Search parameters, VIN-specific queries,
+                                    and valuation models that help train our internal car-matching algorithms.</span>
+                            </li>
+                            <li class="mb-3 d-flex gap-3">
+                                <i class="fas fa-check text-accent mt-1"></i>
+                                <span><strong>Transaction Logic:</strong> Data related to test-drive appointments, loan
+                                    inquiries, and insurance quotes—processed solely to streamline your acquisition
+                                    workflow.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Section: Usage -->
+                <section id="usage" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-project-diagram"></i></div>
+                        <h3 class="fw-800 text-white m-0">2. Project Intention & Algorithmic Use</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>The intentional core of Vehicle Vault is to replace traditional browsing with algorithmic
+                            discovery. We use your data to:</p>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="calc-card p-4 h-100">
+                                    <h6 class="text-white fw-800 mb-2 small">AI Valuation Models</h6>
+                                    <p class="smallest m-0">Historical valuation data is anonymized to calibrate our
+                                        market-prediction tools, ensuring precision pricing for every user.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="calc-card p-4 h-100">
+                                    <h6 class="text-white fw-800 mb-2 small">P2P Connectivity</h6>
+                                    <p class="smallest m-0">Securely routing seller inquiries to qualified buyers,
+                                        protecting personal contact details until a verified match is made.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="small bg-white/5 p-3 rounded-3 border border-white/10"><strong>Note on AI
+                                Ethics:</strong> We do not sell your personal preferences to third-party advertisers.
+                            All algorithmic learning is performed on sanitized datasets to improve the Vault's internal
+                            discovery engine.</p>
+                    </div>
+                </section>
+
+                <!-- Section: Security -->
+                <section id="security" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-shield-alt"></i></div>
+                        <h3 class="fw-800 text-white m-0">3. Engineering Security Protocols</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>Our codebase is engineered with a security-first mindset, reflecting our intent to build
+                            India's most trusted automotive portal:</p>
+                        <div class="p-4 rounded-4 bg-dark/20 border border-white/5 text-center mb-4">
+                            <div class="h1 text-accent mb-3"><i class="fas fa-user-lock"></i></div>
+                            <div class="fw-900 text-white text-uppercase tracking-widest smallest mb-2">DYNAMIC
+                                CRYPTOGRAPHY</div>
+                            <p class="smallest m-0">We utilize multi-layer encryption for all PII (Personally
+                                Identifiable Information). Our Django backend is configured with strict CORS and CSRF
+                                guards to prevent unauthorized access.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Rights -->
+                <section id="rights" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-hand-holding-heart"></i></div>
+                        <h3 class="fw-800 text-white m-0">4. Your Sovereign Rights</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>As a member of the Vault, you maintain ultimate ownership of your digital assets:</p>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <span class="badge border border-white/10 text-muted px-3 py-2 fw-800 smallest">DATA
+                                PORTABILITY</span>
+                            <span class="badge border border-white/10 text-muted px-3 py-2 fw-800 smallest">INSTANT
+                                DELETION</span>
+                            <span class="badge border border-white/10 text-muted px-3 py-2 fw-800 smallest">MINIMAL
+                                RETENTION</span>
+                            <span class="badge border border-white/10 text-muted px-3 py-2 fw-800 smallest">ALGORITHMIC
+                                OPT-OUT</span>
+                        </div>
+                        <p class="m-0">To exercise these rights or discuss our technical implementation, contact our <a
+                                href="{% url 'core:contact' %}"
+                                class="text-accent text-decoration-none fw-800">Governance Office ›</a></p>
+                    </div>
+                </section>
+
+                <!-- Footer Summary -->
+                <div class="mt-5 pt-4 border-top border-white/5 text-center opacity-50 smallest">
+                    PROJECT GOVERNANCE VERSION: 2.5.2 | LAST REFINED: FEBRUARY 2026
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .scroll-margin-top {
+        scroll-margin-top: 120px;
+    }
+
+    .privacy-nav .nav-link:hover,
+    .privacy-nav .nav-link.active {
+        color: var(--accent) !important;
+        border-color: var(--accent) !important;
+    }
+
+    .text-accent {
+        color: var(--accent) !important;
+    }
+
+    .smallest {
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .hover-text-accent:hover {
+        color: var(--accent) !important;
+    }
+</style>
+{% endblock %}

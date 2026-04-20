@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Sitemap | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <!-- Master Index Header -->
+    <div class="text-center mb-5">
+        <span class="badge bg-secondary px-3 py-2 rounded-pill mb-3 fw-800">VAULT MASTER INDEX</span>
+        <h1 class="display-4 fw-900 text-white mb-2">Platform Architecture</h1>
+        <p class="text-muted lead mx-auto" style="max-width: 700px;">A comprehensive guide to every destination within
+            the Vehicle Vault ecosystem.</p>
+    </div>
+
+    <!-- Sitemap Grid -->
+    <div class="row g-4">
+        <!-- Section: Discovery & Inventory -->
+        <div class="col-lg-6 col-xl-3">
+            <div class="calc-card p-4 h-100 hover-lift shadow-lg">
+                <div class="h3 text-accent mb-4"><i class="fas fa-search"></i></div>
+                <h5 class="fw-900 text-white mb-4">Discovery Engine</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-4">
+                        <a href="{% url 'cars:home' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Home
+                            Showcase</a>
+                        <p class="smallest text-muted m-0">The portal to our world-class automotive selection.</p>
+                    </li>
+                    <li class="mb-4">
+                        <a href="{% url 'cars:all_cars' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Elite
+                            Inventory</a>
+                        <p class="smallest text-muted m-0">Browse and filter our verified collection of vehicles.</p>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'cars:compare_cars' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Comparison
+                            Lab</a>
+                        <p class="smallest text-muted m-0">Side-by-side analysis of specifications and pricing.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section: Peer-to-Peer Services -->
+        <div class="col-lg-6 col-xl-3">
+            <div class="calc-card p-4 h-100 hover-lift shadow-lg">
+                <div class="h3 text-accent mb-4"><i class="fas fa-handshake"></i></div>
+                <h5 class="fw-900 text-white mb-4">P2P Ecosystem</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-4">
+                        <a href="{% url 'core:sell_car' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Direct Sell
+                            Program</a>
+                        <p class="smallest text-muted m-0">The fastest way to unlock equity from your vehicle.</p>
+                    </li>
+                    <li class="mb-4">
+                        <a href="{% url 'core:car_valuation' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Valuation
+                            Genius</a>
+                        <p class="smallest text-muted m-0">Get a precision market audit for any vehicle.</p>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'cars:test_drives' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Appointment
+                            Console</a>
+                        <p class="smallest text-muted m-0">Manage your trials and test drive appointments.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section: Financial Services -->
+        <div class="col-lg-6 col-xl-3">
+            <div class="calc-card p-4 h-100 hover-lift shadow-lg">
+                <div class="h3 text-accent mb-4"><i class="fas fa-file-invoice-dollar"></i></div>
+                <h5 class="fw-900 text-white mb-4">Financial Suite</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-4">
+                        <a href="{% url 'core:car_loan' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Asset
+                            Financing</a>
+                        <p class="smallest text-muted m-0">Premium loan structures for elite acquisitions.</p>
+                    </li>
+                    <li class="mb-4">
+                        <a href="{% url 'core:car_insurance' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Vault
+                            Protection</a>
+                        <p class="smallest text-muted m-0">Specialized coverage for high-value masterpieces.</p>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'core:loan_application' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Apply for
+                            Credit</a>
+                        <p class="smallest text-muted m-0">Start your digital finance application workflow.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section: Support & Legal -->
+        <div class="col-lg-6 col-xl-3">
+            <div class="calc-card p-4 h-100 hover-lift shadow-lg">
+                <div class="h3 text-accent mb-4"><i class="fas fa-info-circle"></i></div>
+                <h5 class="fw-900 text-white mb-4">Support Hub</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-4">
+                        <a href="{% url 'core:faq' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Knowledge
+                            Center</a>
+                        <p class="smallest text-muted m-0">Expert answers to common automotive queries.</p>
+                    </li>
+                    <li class="mb-4">
+                        <a href="{% url 'core:contact' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Concierge
+                            Link</a>
+                        <p class="smallest text-muted m-0">Direct access to our specialist assistance teams.</p>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'core:privacy' %}"
+                            class="text-white text-decoration-none fw-800 d-block mb-1 hover-text-accent">Legal &
+                            Privacy</a>
+                        <p class="smallest text-muted m-0">Our commitment to your data and terms of service.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-lift {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent) !important;
+    }
+
+    .hover-text-accent:hover {
+        color: var(--accent) !important;
+    }
+
+    .text-accent {
+        color: var(--accent) !important;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% block title %}Seller Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="section-header">
+        <h2 class="text-white">Seller Dashboard</h2>
+    </div>
+
+    <div class="row g-4">
+        <!-- Add Car -->
+        <div class="col-md-4">
+            <div class="dashboard-card h-100">
+                <div class="card-icon">➕</div>
+                <h4 class="text-white">Add New Car</h4>
+                <p style="color: var(--text-muted);">List a new high-performance vehicle in our curated inventory.</p>
+                <a href="{% url 'cars:add' %}" class="card-btn mt-auto">Add Car</a>
+            </div>
+        </div>
+
+        <!-- Inventory -->
+        <div class="col-md-4">
+            <div class="dashboard-card h-100">
+                <div class="card-icon">🚗</div>
+                <h4 class="text-white">My Inventory</h4>
+                <p style="color: var(--text-muted);">Monitor your active listings and update vehicle specifications.</p>
+                {% if active_cars_count is not None %}
+                <div class="mt-2 mb-2"><span class="badge bg-success rounded-pill px-3 py-2 fw-700">{{ active_cars_count }} Active</span></div>
+                {% endif %}
+                <a href="{% url 'cars:inventory' %}" class="card-btn mt-auto">View Inventory</a>
+            </div>
+        </div>
+
+        <!-- Test Drives -->
+        <div class="col-md-4">
+            <div class="dashboard-card h-100">
+                <div class="card-icon">📅</div>
+                <h4 class="text-white">Appointments</h4>
+                <p style="color: var(--text-muted);">Manage test drive requests and coordinate with potential buyers.</p>
+                <a href="{% url 'cars:test_drives' %}" class="card-btn mt-auto">View Schedule</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-4 mt-2">
+        <!-- Executive Tasks -->
+        <div class="col-lg-6">
+            <div class="p-4 rounded-4 shadow-sm h-100" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-white fw-800 m-0">Executive Tasks</h4>
+                    <span class="badge bg-primary rounded-pill px-3">{{ tasks.count }} Pending</span>
+                </div>
+                <div class="task-list">
+                    {% for task in tasks %}
+                    <div class="p-3 mb-2 rounded-3 d-flex align-items-center gap-3 transition-all" style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent);">
+                        <div class="flex-grow-1">
+                            <div class="text-white fw-700 small">{{ task.title }}</div>
+                            <div class="smallest text-white-50">{{ task.description|truncatechars:60 }}</div>
+                        </div>
+                        <div class="smallest text-white-50">{{ task.created_at|timesince }} ago</div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-4 text-white-50 smallest">No pending executive tasks.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Stream -->
+        <div class="col-lg-6">
+            <div class="p-4 rounded-4 shadow-sm h-100" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                <h4 class="text-white fw-800 mb-4">Activity Stream</h4>
+                <div class="activity-feed custom-scrollbar" style="max-height: 300px; overflow-y: auto;">
+                    {% for log in activities %}
+                    <div class="d-flex gap-3 mb-4">
+                        <div class="activity-dot bg-accent mt-1" style="width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;"></div>
+                        <div>
+                            <div class="text-white small fw-700">{{ log.action_type }}</div>
+                            <div class="smallest text-white-50">{{ log.description }}</div>
+                            <div class="smallest text-accent opacity-50">{{ log.timestamp|timesince }} ago</div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-4 text-white-50 smallest">No recent activities logged.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Negotiations Section -->
+    <div class="mt-5 p-4 rounded-4" style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <div class="d-flex justify-content-between align-items-center mb-4 text-white">
+            <h3 class="fw-bold m-0">Active Professional Negotiations</h3>
+            <a href="{% url 'cars:inbox' %}" class="btn btn-sm btn-outline-accent rounded-pill px-4 fw-700">Open Secure Inbox</a>
+        </div>
+        {% if deals %}
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="text-secondary small text-uppercase">
+                        <tr>
+                            <th>Asset</th>
+                            <th>Counterparty</th>
+                            <th>Offer</th>
+                            <th>Status</th>
+                            <th>History</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for deal in deals %}
+                        <tr>
+                            <td>{{ deal.listing.car }}</td>
+                            <td>{{ deal.buyer.name|default:deal.buyer.email }}</td>
+                            <td class="fw-800 text-accent">₹{{ deal.offered_price }}</td>
+                            <td><span class="badge rounded-pill px-3 {% if deal.status == 'Accepted' %}bg-success{% elif deal.status == 'Rejected' %}bg-danger{% else %}bg-warning{% endif %}">{{ deal.status }}</span></td>
+                            <td class="smallest text-white-50">{{ deal.updated_at|date:"M d, H:i" }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{% url 'cars:chat' deal.buyer.user_id %}?listing_id={{ deal.listing.listing_id }}" class="btn btn-sm btn-outline-light rounded-start-pill">Chat</a>
+                                    {% if deal.status == 'Proposed' %}
+                                    <a href="{% url 'cars:update_deal_status' deal.deal_id 'Accepted' %}" class="btn btn-sm btn-success">Accept</a>
+                                    <a href="{% url 'cars:update_deal_status' deal.deal_id 'Rejected' %}" class="btn btn-sm btn-danger rounded-end-pill">Reject</a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-white-50 italic">No active negotiations in progress.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Sales Section -->
+    <div class="mt-5 p-4 rounded-4" style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <h3 class="fw-bold mb-4 text-white">Closed Sales History</h3>
+        {% if sales %}
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="text-secondary small text-uppercase">
+                        <tr>
+                            <th>Car</th>
+                            <th>Buyer</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for sale in sales %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-2 me-3" style="width: 40px; height: 30px; background: #eef5ff; overflow: hidden;">
+                                            {% if sale.car.car_image %}
+                                                <img src="{{ sale.car.car_image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                                            {% endif %}
+                                        </div>
+                                        <span>{{ sale.car.brand }} {{ sale.car.model }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small fw-medium">{{ sale.user.name|default:sale.user.email }}</div>
+                                    <div class="text-muted smallest">{{ sale.user.email }}</div>
+                                </td>
+                                <td>₹{{ sale.price }}</td>
+                                <td>{{ sale.payment_method }}</td>
+                                <td class="small">{{ sale.created_at|date:"M d, Y" }}</td>
+                                <td><span class="badge bg-success rounded-pill px-3">{{ sale.payment_status }}</span></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted mb-0">No sales recorded in the vault yet.</p>
+            </div>
+        {% endif %}
+    </div>
+    <!-- Test Drive Requests -->
+    <div class="mt-5 p-4 rounded-4" style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold m-0 text-white">Incoming Test Drive Requests</h3>
+            <a href="{% url 'cars:test_drives' %}" class="btn btn-sm btn-outline-accent rounded-pill px-4 fw-700">Manage All</a>
+        </div>
+        {% if test_drives %}
+        <div class="table-responsive">
+            <table class="table table-dark table-hover mb-0">
+                <thead class="text-secondary small text-uppercase">
+                    <tr>
+                        <th>Vehicle</th>
+                        <th>Buyer</th>
+                        <th>Proposed Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="align-middle">
+                    {% for drive in test_drives %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if drive.listing.car.car_image %}
+                                <div class="rounded-2 me-3" style="width: 40px; height: 30px; background: #eef5ff; overflow: hidden;">
+                                    <img src="{{ drive.listing.car.car_image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                                </div>
+                                {% endif %}
+                                <span class="small fw-700">{{ drive.listing.car }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="small fw-medium">{{ drive.buyer.name|default:drive.buyer.email }}</div>
+                            <div class="smallest text-muted">{{ drive.buyer.email }}</div>
+                        </td>
+                        <td class="small">{{ drive.proposed_date|date:"M d, Y" }}</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 {% if drive.status == 'Confirmed' %}bg-success{% elif drive.status == 'Cancelled' %}bg-danger{% elif drive.status == 'Completed' %}bg-primary{% else %}bg-warning text-dark{% endif %}">
+                                {% if drive.status == 'Confirmed' %}Approved{% else %}{{ drive.status }}{% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{% url 'cars:chat' drive.buyer.user_id %}?listing_id={{ drive.listing.listing_id }}" class="btn btn-sm btn-outline-light rounded-pill px-3">Message Buyer</a>
+                                {% if drive.status == 'Pending' %}
+                                <a href="{% url 'cars:update_test_drive_status' drive.test_drive_id 'Confirmed' %}" class="btn btn-sm btn-success rounded-pill px-3">Approve</a>
+                                <a href="{% url 'cars:update_test_drive_status' drive.test_drive_id 'Cancelled' %}" class="btn btn-sm btn-danger rounded-pill px-3">Reject</a>
+                                {% elif drive.status == 'Confirmed' %}
+                                <a href="{% url 'cars:update_test_drive_status' drive.test_drive_id 'Completed' %}" class="btn btn-sm btn-primary rounded-pill px-3">Mark Complete</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <p class="text-white-50 italic">No test drive requests received yet.</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

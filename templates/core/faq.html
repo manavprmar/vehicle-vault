@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Knowledge Center | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <!-- Knowledge Hub Header -->
+    <div class="text-center mb-5">
+        <span class="badge bg-primary px-3 py-2 rounded-pill mb-3 fw-800">AUTOMOTIVE WISDOM</span>
+        <h1 class="display-4 fw-900 text-white mb-2">Vault Knowledge <span class="text-accent">Center</span></h1>
+        <p class="text-muted lead mx-auto" style="max-width: 700px;">Expert answers to everything about acquiring,
+            maintaining, and disposing of your automotive masterpieces.</p>
+    </div>
+
+    <!-- FAQ Categories & Accordions -->
+    <div class="row g-5 justify-content-center">
+        <div class="col-lg-10">
+
+            <!-- Category: Buying & Selling -->
+            <div class="mb-5">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="h3 m-0 text-accent"><i class="fas fa-handshake"></i></div>
+                    <h2 class="fw-900 text-white m-0">Buying & Selling</h2>
+                </div>
+                <div class="accordion accordion-flush premium-accordion" id="buyingFaqs">
+                    <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#b1">
+                                How does direct-buy work?
+                            </button>
+                        </h2>
+                        <div id="b1" class="accordion-collapse collapse" data-bs-parent="#buyingFaqs">
+                            <div class="accordion-body text-muted bg-dark/50 p-4">
+                                When you sell to the Vault, our specialists evaluate your car, provide a premium offer,
+                                and handle all the paperwork. You get paid instantly once the deal is finalized, with
+                                zero commission.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#b2">
+                                What is the 'Vault Inspection'?
+                            </button>
+                        </h2>
+                        <div id="b2" class="accordion-collapse collapse" data-bs-parent="#buyingFaqs">
+                            <div class="accordion-body text-muted bg-dark/50 p-4">
+                                It's a comprehensive 200-point audit conducted by our master technicians. We check
+                                everything from engine telemetry to paint thickness to ensure every car in the Vault
+                                meets our elite standards.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category: Finance & Insurance -->
+            <div class="mb-5">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="h3 m-0 text-accent"><i class="fas fa-file-invoice-doll"></i></div>
+                    <h2 class="fw-900 text-white m-0">Finance & Insurance</h2>
+                </div>
+                <div class="accordion accordion-flush premium-accordion" id="financeFaqs">
+                    <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#f1">
+                                Can I get finance on vintage vehicles?
+                            </button>
+                        </h2>
+                        <div id="f1" class="accordion-collapse collapse" data-bs-parent="#financeFaqs">
+                            <div class="accordion-body text-muted bg-dark/50 p-4">
+                                Yes. Our specialized asset-backed finance program offers tailored interest rates for
+                                classic and collector cars, recognizing their long-term asset value.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#f2">
+                                What does 'Zero-Dep' insurance cover?
+                            </button>
+                        </h2>
+                        <div id="f2" class="accordion-collapse collapse" data-bs-parent="#financeFaqs">
+                            <div class="accordion-body text-muted bg-dark/50 p-4">
+                                Zero Depreciation insurance means that in case of a claim, the insurance company pays
+                                for the full cost of replacing parts without accounting for their age-based
+                                depreciation.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category: Logistics & Verification -->
+            <div class="mb-5">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="h3 m-0 text-accent"><i class="fas fa-truck-moving"></i></div>
+                    <h2 class="fw-900 text-white m-0">Logistics & Verification</h2>
+                </div>
+                <div class="accordion accordion-flush premium-accordion" id="logisticsFaqs">
+                    <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#l1">
+                                Do you offer nationwide delivery?
+                            </button>
+                        </h2>
+                        <div id="l1" class="accordion-collapse collapse" data-bs-parent="#logisticsFaqs">
+                            <div class="accordion-body text-muted bg-dark/50 p-4">
+                                Yes. We utilize closed-container transport for all Vault acquisitions ensuring your
+                                masterpiece reaches you in showroom condition, regardless of geography.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#l2">
+                                How is the ownership transfer handled?
+                            </button>
+                        </h2>
+                        <div id="l2" class="accordion-collapse collapse" data-bs-parent="#logisticsFaqs">
+                            <div class="accordion-body text-muted bg-dark/50 p-4">
+                                Our legal team manages the entire RTO process. From RC transfer to insurance
+                                endorsement, we handle all bureaucracy so you don't have to visit a single government
+                                office.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Find More Help CTA -->
+    <div class="glass-card p-5 rounded-4 text-center mt-4"
+        style="background: radial-gradient(circle at top, rgba(56, 189, 248, 0.1), transparent); border: 1px solid var(--glass-border);">
+        <h3 class="fw-900 text-white mb-3">Still have questions?</h3>
+        <p class="text-muted mb-4">Our concierge team is waiting to assist you with personalized consultation.</p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="{% url 'core:contact' %}"
+                class="btn btn-primary rounded-pill px-5 py-3 fw-900 shadow-lg hover-lift">CONTACT AN EXPERT</a>
+            <a href="{% url 'core:help_center' %}" class="btn btn-outline-light rounded-pill px-5 py-3 fw-800">VISIT
+                HELP CENTER</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .premium-accordion .accordion-button:not(.collapsed) {
+        background-color: rgba(56, 189, 248, 0.1) !important;
+        color: var(--accent) !important;
+    }
+
+    .premium-accordion .accordion-button::after {
+        filter: invert(1);
+    }
+
+    .premium-accordion .accordion-item {
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        transition: border-color 0.3s ease;
+    }
+
+    .premium-accordion .accordion-item:hover {
+        border-color: rgba(56, 189, 248, 0.3) !important;
+    }
+
+    .text-accent {
+        color: var(--accent) !important;
+    }
+
+    .hover-lift {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-8px);
+    }
+</style>
+{% endblock %}

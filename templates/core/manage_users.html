@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="dashboard-container">
+    <div class="section-header">
+        <div class="badge bg-danger-subtle text-danger mb-3"
+            style="border-radius: 20px; padding: 8px 20px; font-weight: 600; letter-spacing: 1px;">ADMINISTRATION
+            CONTROL</div>
+        <h2 style="color: var(--text-main); font-weight: 800;">User Account Management</h2>
+        <p style="color: var(--text-muted); opacity: 0.9;">Oversee all registered users, adjust permissions, and manage access.</p>
+    </div>
+
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <div class="search-box">
+            <input type="text" placeholder="Search accounts (name, email, role)..." id="userSearch"
+                style="background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--glass-border); border-radius: 24px; padding: 12px 25px; width: 350px; outline: none; transition: var(--transition);">
+        </div>
+        <div class="small fw-bold" style="color: var(--accent);">Total Registered: {{ users|length }}</div>
+    </div>
+
+    <div class="inventory-table-container shadow-lg"
+        style="background: var(--bg-card); border-radius: 32px; overflow: hidden; border: 1px solid var(--glass-border);">
+        <table class="table table-dark table-hover mb-0"
+            style="--bs-table-bg: transparent; --bs-table-hover-bg: rgba(56, 189, 248, 0.05); color: #fff;">
+            <thead style="background: rgba(30, 41, 59, 0.95); border-bottom: 2px solid var(--accent);">
+                <tr>
+                    <th class="ps-5 py-4 text-white uppercase tracking-wider" style="font-weight: 700; font-size: 0.85rem;">Account Holder</th>
+                    <th class="py-4 text-white uppercase tracking-wider" style="font-weight: 700; font-size: 0.85rem;">Email Address</th>
+                    <th class="py-4 text-white uppercase tracking-wider" style="font-weight: 700; font-size: 0.85rem;">Role</th>
+                    <th class="py-4 text-white uppercase tracking-wider" style="font-weight: 700; font-size: 0.85rem;">Joined date</th>
+                    <th class="text-end pe-5 py-4 text-white uppercase tracking-wider" style="font-weight: 700; font-size: 0.85rem;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                {% for u in users %}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td class="ps-5 py-4">
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar-small me-3 role-{{ u.role|lower }}"
+                                style="width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem;">
+                                {{ u.email|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <div class="fw-bold text-white">{{ u.name|default:"Unnamed User" }}</div>
+                                <div class="small" style="color: var(--text-muted); font-size: 0.8rem;">ID: #{{ u.user_id|truncatechars:13 }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-white">{{ u.email }}</td>
+                    <td class="align-middle">
+                        {% if u.role == 'Admin' %}
+                        <span class="badge bg-danger-subtle text-danger px-3 py-2 fw-bold" style="border-radius: 10px;">{{ u.role }}</span>
+                        {% elif u.role == 'Seller' %}
+                        <span class="badge bg-info-subtle text-info px-3 py-2 fw-bold" style="border-radius: 10px;">{{ u.role }}</span>
+                        {% else %}
+                        <span class="badge bg-primary-subtle text-primary px-3 py-2 fw-bold" style="border-radius: 10px;">{{ u.role }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="align-middle" style="color: var(--text-muted);">{{ u.date_joined|date:"M d, Y" }}</td>
+                    <td class="text-end pe-5 align-middle">
+                        {% if u != request.user %}
+                        <a href="{% url 'core:forced_delete_user' u.user_id %}" class="btn btn-sm btn-outline-danger"
+                            style="border-radius: 10px; padding: 6px 15px;"
+                            onclick="return confirm('Permanently remove this user account? This action cannot be undone.');">
+                            Remove
+                        </a>
+                        {% else %}
+                        <span class="badge bg-secondary opacity-50 px-3 py-2">System User</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById('userSearch').addEventListener('keyup', function () {
+        let filter = this.value.toUpperCase();
+        let rows = document.getElementById('userTableBody').getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
+            let text = rows[i].textContent || rows[i].innerText;
+            rows[i].style.display = text.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+        }
+    });
+</script>
+
+<style>
+    #userSearch:focus {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.2) !important;
+    }
+
+    .role-admin {
+        background: var(--danger);
+        color: #fff;
+    }
+
+    .role-seller {
+        background: var(--accent);
+        color: #020617;
+    }
+
+    .role-buyer {
+        background: var(--primary);
+        color: #fff;
+    }
+</style>
+
+{% endblock %}

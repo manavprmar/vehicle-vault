@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login | Vehicle Vault{% endblock %}
+
+{% block content %}
+<style>
+    /* Professional Login Page Styles */
+    body {
+        background: var(--bg-gradient) fixed;
+    }
+
+    .login-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 80px);
+        /* Adjust based on navbar height */
+        padding: 40px 20px;
+    }
+
+    .login-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+        overflow: hidden;
+        max-width: 900px;
+        border: 1px solid var(--glass-border);
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .login-image-side {
+        flex: 1;
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(255, 255, 255, 0.96));
+        color: var(--text-main);
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        border-right: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .login-image-side h2 {
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-size: 2.2rem;
+        background: linear-gradient(to right, var(--primary-dark), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .login-image-side p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .login-form-side {
+        flex: 1;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: transparent;
+    }
+
+    .login-form-side label {
+        font-weight: 600;
+        color: var(--text-soft);
+        margin-bottom: 8px;
+    }
+
+    .login-form-side input.form-control,
+    .login-form-side select.form-select {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 1px solid var(--glass-border);
+        background-color: rgba(255, 255, 255, 0.94);
+        color: var(--text-main);
+        transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+    }
+
+    .login-form-side input.form-control:focus,
+    .login-form-side select.form-select:focus {
+        border-color: var(--accent);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+        color: var(--text-main);
+    }
+
+    .login-form-side select.form-select option {
+        color: #000;
+        background-color: #fff;
+    }
+
+    .login-form-side input.form-control::placeholder {
+        color: #acbbc9;
+        /* Visible light-slate gray */
+        opacity: 1;
+        /* Override Firefox's default opacity */
+    }
+
+    .btn-login {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border: none;
+        color: white;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        transition: all 0.3s ease;
+        margin-top: 15px;
+    }
+
+    .btn-login:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .carousel-section {
+        background: transparent;
+        padding: 60px 20px;
+        color: var(--text-main);
+    }
+
+    .carousel-item img {
+        height: 600px;
+        width: 100%;
+        max-width: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 15px;
+        filter: brightness(0.7);
+        image-rendering: -webkit-optimize-contrast;
+        /* Webkit crisp edges */
+        image-rendering: crisp-edges;
+    }
+
+    .carousel-caption {
+        bottom: 50px;
+        background: rgba(255, 255, 255, 0.82);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+    }
+
+    .carousel-caption h3 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-dark);
+        margin-bottom: 10px;
+    }
+
+    .carousel-caption p {
+        color: var(--text-soft);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .login-card {
+            flex-direction: column;
+        }
+
+        .login-image-side {
+            padding: 40px 20px;
+        }
+
+        .carousel-item img {
+            height: 400px;
+        }
+    }
+</style>
+
+<!-- MAIN LOGIN SECTION -->
+<div class="login-container">
+    <div class="login-card">
+
+        <!-- Left Side: Branding/App Info -->
+        <div class="login-image-side">
+            <h2 style="color: #fff;">Welcome Back to Vehicle Vault</h2>
+            <p>Your premium destination to discover, buy, and manage exclusive cars. Log in to access your custom
+                dashboard and pick up right where you left off.</p>
+            <div class="mt-4">
+                <span style="font-size: 3rem;">🚘</span>
+            </div>
+        </div>
+
+        <!-- Right Side: The Form -->
+        <div class="login-form-side">
+            <h3 class="mb-4 text-white" style="font-weight: 700;">Sign In</h3>
+
+            <form method="post" action="{% url 'core:login' %}">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Using manual fields for better styling -->
+                <div class="mb-2">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="John Doe">
+                </div>
+
+                <div class="mb-2">
+                    <label for="id_email" class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" id="id_email" placeholder="name@example.com"
+                        required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="id_role" class="form-label">Account Role</label>
+                    <select name="role" class="form-select" id="id_role" required>
+                        <option value="Buyer">Buyer</option>
+                        <option value="Seller">Seller</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mb-2">
+                        <label for="id_password" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="id_password"
+                            placeholder="••••••••" required>
+                    </div>
+
+                    <div class="col-6 mb-2">
+                        <label class="form-label">Confirm</label>
+                        <input type="password" name="confirm_password" class="form-control" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div class="text-end mb-3">
+                    <a href="{% url 'core:password_reset' %}" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">Forgot Password?</a>
+                </div>
+
+                <div class="d-grid gap-2 mt-3">
+                    <button type="submit" class="btn btn-login">Login to Dashboard</button>
+                </div>
+
+                <p class="text-center mt-4 mb-0" style="color: var(--text-muted);">
+                    Don't have an account? <a href="{% url 'core:signup' %}" class="fw-bold"
+                        style="color: var(--accent); text-decoration: none;">Sign up</a>
+                </p>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- FEATURED CARS SLIDESHOW SECTION -->
+<div class="carousel-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 style="font-weight: 700;">Featured Inventory</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Explore top picks curated by our experts</p>
+        </div>
+
+        <div id="featuredCarsCarousel" class="carousel slide carousel-fade shadow-lg" data-bs-ride="carousel">
+
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#featuredCarsCarousel" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#featuredCarsCarousel" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#featuredCarsCarousel" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+
+            <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+
+                <!-- Slide 1 -->
+                <div class="carousel-item active" data-bs-interval="4000">
+                    <img src="{% static 'images/BMW.jpg' %}" class="d-block w-100" alt="BMW X5">
+                    <div class="carousel-caption d-none d-md-block text-start">
+                        <h3>BMW X5</h3>
+                        <p class="fs-5 mb-1"><strong>Price:</strong> ₹75,00,000</p>
+                        <p class="fs-6 mb-0">Experience ultimate luxury and performance. The X5 delivers dynamic driving
+                            with state-of-the-art tech features.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="{% static 'images/Audi.jpg' %}" class="d-block w-100" alt="Audi Q7">
+                    <div class="carousel-caption d-none d-md-block text-start">
+                        <h3>Audi Q7</h3>
+                        <p class="fs-5 mb-1"><strong>Price:</strong> ₹80,00,000</p>
+                        <p class="fs-6 mb-0">Spacious, sophisticated, and smart. The Audi Q7 merges robust power with a
+                            refined, incredibly comfortable interior.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="{% static 'images/Mercedes.jpg' %}" class="d-block w-100" alt="Mercedes GLE">
+                    <div class="carousel-caption d-none d-md-block text-start">
+                        <h3>Mercedes-Benz GLE</h3>
+                        <p class="fs-5 mb-1"><strong>Price:</strong> ₹85,00,000</p>
+                        <p class="fs-6 mb-0">Innovation meets elegance. The GLE sets the standard for modern SUVs with
+                            striking design and cutting-edge safety.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarsCarousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarsCarousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

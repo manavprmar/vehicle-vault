@@ -1,0 +1,167 @@
+{% load static %}
+{% with current_view=request.resolver_match.view_name|default:'' %}
+<header class="site-header">
+    <div class="vv-topbar">
+        <div class="container-fluid px-3 px-lg-4">
+            <div class="vv-topbar-inner">
+                <div class="vv-topbar-contact">
+                    <a href="tel:+919876543210">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+91 9876543210</span>
+                    </a>
+                    <a href="mailto:vehiclevault11@gmail.com">
+                        <i class="fas fa-envelope"></i>
+                        <span>vehiclevault11@gmail.com</span>
+                    </a>
+                </div>
+
+                <div class="vv-topbar-links d-none d-md-flex">
+                    <a href="{% url 'core:contact' %}">Client Services</a>
+                    <a href="{% url 'core:help_center' %}">Help Center</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-xl vv-navbar">
+        <div class="container-fluid px-3 px-lg-4">
+            <div class="vv-navbar-shell">
+                <a class="navbar-brand vv-brand" href="{% url 'cars:home' %}">
+                    <span class="vv-brand-mark">
+                        <img src="{% static 'images/logo.png' %}" alt="VehicleVault Logo">
+                    </span>
+                    <span class="vv-brand-copy">
+                        <span class="vv-brand-kicker">Automotive Platform</span>
+                        <span class="vv-brand-wordmark">VehicleVault</span>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler vv-navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#primaryNavbar" aria-controls="primaryNavbar" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="primaryNavbar">
+                    <ul class="navbar-nav vv-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link vv-nav-link{% if current_view == 'cars:home' %} active{% endif %}"
+                                href="{% url 'cars:home' %}">Home</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link vv-nav-link dropdown-toggle{% if current_view == 'cars:all_cars' or current_view == 'cars:all_cars_alias' or current_view == 'cars:used_cars' or current_view == 'cars:upcoming_cars' or current_view == 'cars:electric_cars' %} active{% endif %}"
+                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cars</a>
+                            <ul class="dropdown-menu vv-dropdown">
+                                <li><a class="dropdown-item{% if current_view == 'cars:all_cars' or current_view == 'cars:all_cars_alias' %} active{% endif %}"
+                                        href="{% url 'cars:all_cars' %}">All Cars</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'cars:used_cars' %} active{% endif %}"
+                                        href="{% url 'cars:used_cars' %}">Used Cars</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'cars:upcoming_cars' %} active{% endif %}"
+                                        href="{% url 'cars:upcoming_cars' %}">Upcoming Cars</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'cars:electric_cars' %} active{% endif %}"
+                                        href="{% url 'cars:electric_cars' %}">Electric Cars</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link vv-nav-link dropdown-toggle{% if current_view == 'cars:compare_cars' or current_view == 'cars:find_new' or current_view == 'cars:wishlist' or current_view == 'cars:inbox' or current_view == 'cars:test_drives' or current_view == 'cars:inventory' %} active{% endif %}"
+                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tools</a>
+                            <ul class="dropdown-menu vv-dropdown">
+                                <li><a class="dropdown-item{% if current_view == 'cars:compare_cars' %} active{% endif %}"
+                                        href="{% url 'cars:compare_cars' %}">Compare Cars</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'cars:find_new' %} active{% endif %}"
+                                        href="{% url 'cars:find_new' %}">Find New Car</a></li>
+                                {% if user.is_authenticated %}
+                                <li><a class="dropdown-item{% if current_view == 'cars:wishlist' %} active{% endif %}"
+                                        href="{% url 'cars:wishlist' %}">Wishlist</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'cars:inbox' %} active{% endif %}"
+                                        href="{% url 'cars:inbox' %}">Inbox</a></li>
+                                {% endif %}
+                                {% if user.is_authenticated and user.role == "Buyer" %}
+                                <li><a class="dropdown-item{% if current_view == 'cars:test_drives' %} active{% endif %}"
+                                        href="{% url 'cars:test_drives' %}">Test Drives</a></li>
+                                {% endif %}
+                                {% if user.is_authenticated %}
+                                {% if user.role == "Admin" or user.role == "Seller" or user.role == "Dealer" %}
+                                <li><a class="dropdown-item{% if current_view == 'cars:inventory' %} active{% endif %}"
+                                        href="{% url 'cars:inventory' %}">Inventory</a></li>
+                                {% endif %}
+                                {% endif %}
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link vv-nav-link dropdown-toggle{% if current_view == 'core:sell_car' or current_view == 'core:car_loan' or current_view == 'core:loan_application' or current_view == 'core:car_insurance' or current_view == 'core:insurance_quote' or current_view == 'core:car_valuation' or current_view == 'core:valuation_check' %} active{% endif %}"
+                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+                            <ul class="dropdown-menu vv-dropdown">
+                                <li><a class="dropdown-item{% if current_view == 'core:sell_car' %} active{% endif %}"
+                                        href="{% url 'core:sell_car' %}">Sell Your Car</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'core:car_loan' or current_view == 'core:loan_application' %} active{% endif %}"
+                                        href="{% url 'core:car_loan' %}">Car Loan</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'core:car_insurance' or current_view == 'core:insurance_quote' %} active{% endif %}"
+                                        href="{% url 'core:car_insurance' %}">Car Insurance</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'core:car_valuation' or current_view == 'core:valuation_check' %} active{% endif %}"
+                                        href="{% url 'core:car_valuation' %}">Car Valuation</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link vv-nav-link dropdown-toggle{% if current_view == 'core:about' or current_view == 'core:faq' or current_view == 'core:contact' or current_view == 'core:privacy' or current_view == 'core:terms' %} active{% endif %}"
+                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Company</a>
+                            <ul class="dropdown-menu vv-dropdown">
+                                <li><a class="dropdown-item{% if current_view == 'core:about' %} active{% endif %}"
+                                        href="{% url 'core:about' %}">About Us</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'core:faq' %} active{% endif %}"
+                                        href="{% url 'core:faq' %}">FAQ</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'core:contact' %} active{% endif %}"
+                                        href="{% url 'core:contact' %}">Contact</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'core:privacy' %} active{% endif %}"
+                                        href="{% url 'core:privacy' %}">Privacy Policy</a></li>
+                                <li><a class="dropdown-item{% if current_view == 'core:terms' %} active{% endif %}"
+                                        href="{% url 'core:terms' %}">Terms of Service</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="vv-navbar-tools">
+                        <form method="get" action="{% url 'cars:all_cars' %}" class="vv-search" role="search">
+                            <span class="vv-search-icon" aria-hidden="true"><i class="fas fa-search"></i></span>
+                            <input type="text" name="q" value="{{ request.GET.q|default:'' }}"
+                                placeholder="Search inventory" aria-label="Search cars">
+                        </form>
+
+                        <div class="vv-auth">
+                            {% if user.is_authenticated %}
+                            <span class="vv-role-badge d-none d-xl-inline-flex">{{ user.role }}</span>
+                            <a href="{% url 'core:dashboard_redirect' %}" class="vv-btn vv-btn-primary">Dashboard</a>
+                            <a href="{% url 'core:profile' %}" class="vv-btn vv-btn-secondary">Profile</a>
+                            <a href="{% url 'core:logout' %}" class="vv-btn vv-btn-secondary">Logout</a>
+                            {% else %}
+                            <a href="{% url 'core:login' %}" class="vv-btn vv-btn-secondary">Login</a>
+                            <a href="{% url 'core:signup' %}" class="vv-btn vv-btn-primary">Sign Up</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+    (() => {
+        const navbarShell = document.querySelector('.vv-navbar-shell');
+        if (!navbarShell) return;
+
+        const syncNavbarState = () => {
+            navbarShell.classList.toggle('scrolled', window.scrollY > 12);
+        };
+
+        syncNavbarState();
+        window.addEventListener('scroll', syncNavbarState, { passive: true });
+    })();
+</script>
+{% endwith %}

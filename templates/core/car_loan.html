@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}Car Loan | Vehicle Vault{% endblock %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+<!-- Chart.js for visual breakdown -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="loan-page-header text-center text-lg-start">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="badge bg-primary px-3 py-2 rounded-pill mb-3 fw-800">VAULT FINANCING</span>
+                <h1 class="display-4 fw-900 mb-4 text-white">Instant Car Loans.<br><span class="text-accent">Zero
+                        Commute.</span></h1>
+                <p class="lead mb-4 text-muted">Get pre-approved in minutes with our elite banking partners. We offer
+                    competitive interest rates tailored for your next masterpiece.</p>
+                <div class="d-flex flex-wrap gap-4 mb-4 justify-content-center justify-content-lg-start">
+                    <div class="stat-item">
+                        <div class="h3 fw-900 m-0 text-white">8.5%</div>
+                        <div class="smallest text-muted text-uppercase fw-800">Starting ROI</div>
+                    </div>
+                    <div class="stat-item border-start ps-4" style="border-color: var(--glass-border) !important;">
+                        <div class="h3 fw-900 m-0 text-white">10 Min</div>
+                        <div class="smallest text-muted text-uppercase fw-800">Approval Time</div>
+                    </div>
+                    <div class="stat-item border-start ps-4" style="border-color: var(--glass-border) !important;">
+                        <div class="h3 fw-900 m-0 text-white">100%</div>
+                        <div class="smallest text-muted text-uppercase fw-800">Digital Process</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center">
+                <div class="hero-icon-display p-5 h1 m-0" style="font-size: 8rem; opacity: 0.8;">🏦</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Grid -->
+    <div class="row g-4 mb-5">
+        <!-- Inputs Column -->
+        <div class="col-lg-4">
+            <div class="calc-card p-4 shadow-lg">
+                <h4 class="fw-800 mb-4 text-white">Calculator</h4>
+
+                <div class="mb-5">
+                    <label class="input-group-label" for="amountSlider">Loan Amount</label>
+                    <div class="range-amount-display" id="amountDisplay">₹ 10,00,000</div>
+                    <input type="range" class="form-range w-100" id="amountSlider" min="500000" max="10000000"
+                        step="50000" value="1500000">
+                    <div class="d-flex justify-content-between mt-2 smallest text-muted fw-700">
+                        <span>5L</span>
+                        <span>1Cr</span>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="input-group-label" for="tenureSlider">Tenure (Months)</label>
+                    <div class="h4 fw-800 text-white mb-2" id="tenureDisplay">60 Months</div>
+                    <input type="range" class="form-range w-100" id="tenureSlider" min="12" max="84" step="12"
+                        value="60">
+                    <div class="d-flex justify-content-between mt-2 smallest text-muted fw-700">
+                        <span>1Y</span>
+                        <span>7Y</span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="input-group-label" for="rateSlider">Interest Rate (%)</label>
+                    <div class="h4 fw-800 text-white mb-2" id="rateDisplay">8.5%</div>
+                    <input type="range" class="form-range w-100" id="rateSlider" min="6" max="15" step="0.5"
+                        value="8.5">
+                    <div class="d-flex justify-content-between mt-2 smallest text-muted fw-700">
+                        <span>6%</span>
+                        <span>15%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Breakdown Column -->
+        <div class="col-lg-4">
+            <div class="calc-card p-4 shadow-lg">
+                <h4 class="fw-800 mb-4 text-white">Visual Breakdown</h4>
+                <div class="chart-container">
+                    <canvas id="loanChart"></canvas>
+                </div>
+                <div class="p-3 mt-4 rounded-4" style="background: rgba(255,255,255,0.02);">
+                    <p class="smallest text-muted mb-0 lh-base italic">Values shown are estimated. Actual ROI and
+                        processing fees depend on credit score and partner bank policies.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Column -->
+        <div class="col-lg-4">
+            <div class="calc-card p-4 shadow-lg">
+                <h4 class="fw-800 mb-4 text-white">Monthly EMI</h4>
+                <div class="text-center py-4 result-item mb-4">
+                    <div class="result-emi" id="emiResult">₹ 30,776</div>
+                    <div class="smallest text-muted text-uppercase fw-800 mt-2">Per Month</div>
+                </div>
+
+                <div class="result-item mb-3">
+                    <label class="smallest text-muted text-uppercase fw-800 d-block mb-1">Total Interest</label>
+                    <div class="result-value" id="totalInterestResult">₹ 3,46,550</div>
+                </div>
+
+                <div class="result-item mb-4">
+                    <label class="smallest text-muted text-uppercase fw-800 d-block mb-1">Total Repayment</label>
+                    <div class="result-value" id="totalAmountResult">₹ 18,46,550</div>
+                </div>
+
+                <a href="{% url 'core:loan_application' %}"
+                    class="btn btn-primary rounded-pill w-100 py-3 fw-900 shadow-lg">START APPLICATION</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/loan_calculator.js' %}"></script>
+{% endblock %}
