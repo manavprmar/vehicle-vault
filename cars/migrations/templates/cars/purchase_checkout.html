@@ -1,0 +1,469 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --vault-navy: #0f172a;
+        --vault-slate: #1e293b;
+        --vault-panel: rgba(255, 255, 255, 0.98);
+        --vault-border: rgba(148, 163, 184, 0.16);
+        --vault-accent: #3b82f6;
+        --vault-muted: #64748b;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg-gradient);
+        color: var(--text-main);
+    }
+
+    .checkout-shell { padding: 56px 0 72px; }
+    .vault-card {
+        background: var(--vault-panel);
+        border: 1px solid var(--vault-border);
+        border-radius: 24px;
+        box-shadow: 0 30px 80px rgba(15, 23, 42, 0.08);
+        backdrop-filter: blur(18px);
+    }
+    .field-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 0.55rem;
+        display: block;
+    }
+    .method-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 14px;
+    }
+    .method-input { display: none; }
+    .method-card {
+        border: 1px solid var(--vault-border);
+        border-radius: 18px;
+        padding: 22px 14px;
+        background: rgba(255, 255, 255, 0.96);
+        text-align: center;
+        transition: 0.2s ease;
+        cursor: pointer;
+        height: 100%;
+        display: block;
+    }
+    .method-card i {
+        font-size: 1.45rem;
+        color: #64748b;
+        margin-bottom: 10px;
+    }
+    .method-card strong {
+        display: block;
+        color: var(--text-main);
+        font-size: 0.98rem;
+    }
+    .method-card span {
+        color: var(--vault-muted);
+        font-size: 0.8rem;
+    }
+    .method-input:checked + .method-card {
+        border-color: var(--vault-accent);
+        background: rgba(59, 130, 246, 0.1);
+        box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+    }
+    .method-input:checked + .method-card i,
+    .method-input:checked + .method-card span { color: var(--primary-dark); }
+    .vault-input,
+    .vault-select,
+    .vault-textarea {
+        background: rgba(255, 255, 255, 0.96) !important;
+        border: 1px solid rgba(148, 163, 184, 0.16) !important;
+        color: var(--text-main) !important;
+        border-radius: 14px !important;
+        padding: 13px 15px !important;
+    }
+    .vault-input:focus,
+    .vault-select:focus,
+    .vault-textarea:focus {
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14) !important;
+        border-color: rgba(59, 130, 246, 0.55) !important;
+    }
+    .option-panel {
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.96);
+        padding: 22px;
+    }
+    .metric-card {
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 16px;
+        padding: 16px;
+    }
+    .metric-label {
+        color: #64748b;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        margin-bottom: 6px;
+    }
+    .metric-value {
+        color: var(--text-main);
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+    .token-strip {
+        border: 1px solid rgba(34, 197, 94, 0.25);
+        background: rgba(34, 197, 94, 0.08);
+        border-radius: 18px;
+        padding: 18px;
+    }
+    .summary-card { position: sticky; top: 24px; }
+    .car-preview {
+        height: 230px;
+        background: linear-gradient(180deg, rgba(248, 251, 255, 1), rgba(241, 247, 255, 1));
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+    .car-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 13px 0;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    }
+    .summary-total {
+        color: #60a5fa;
+        font-size: 1.6rem;
+        font-weight: 800;
+    }
+    .submit-btn {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        border: none;
+        color: white;
+        border-radius: 18px;
+        padding: 18px;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        width: 100%;
+    }
+    .helper-note {
+        color: var(--vault-muted);
+        font-size: 0.88rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-shell">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="vault-card p-4 p-md-5">
+                    <div class="mb-4">
+                        <h1 class="text-white fw-bold mb-2">Secure Purchase</h1>
+                        <p class="helper-note mb-0">Choose your payment route, confirm delivery details, and continue to the payment gateway.</p>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger border-0 rounded-4 mb-4">
+                        <strong>Please fix these issues before continuing:</strong>
+                        <ul class="mb-0 mt-2">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <form method="post" id="purchase-form">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label class="field-label">Primary Payment Method</label>
+                            <div class="method-grid">
+                                <label>
+                                    <input class="method-input" type="radio" name="payment_method" value="Cash" {% if selected_payment_method == 'Cash' %}checked{% endif %}>
+                                    <span class="method-card">
+                                        <i class="fas fa-wallet"></i>
+                                        <strong>Full Payment</strong>
+                                        <span>Pay the full amount now</span>
+                                    </span>
+                                </label>
+                                <label>
+                                    <input class="method-input" type="radio" name="payment_method" value="Card" {% if selected_payment_method == 'Card' %}checked{% endif %}>
+                                    <span class="method-card">
+                                        <i class="fas fa-credit-card"></i>
+                                        <strong>Credit Card</strong>
+                                        <span>Gateway card checkout</span>
+                                    </span>
+                                </label>
+                                <label>
+                                    <input class="method-input" type="radio" name="payment_method" value="Bank Transfer" {% if selected_payment_method == 'Bank Transfer' %}checked{% endif %}>
+                                    <span class="method-card">
+                                        <i class="fas fa-building-columns"></i>
+                                        <strong>Bank Transfer</strong>
+                                        <span>Confirm through gateway</span>
+                                    </span>
+                                </label>
+                                <label>
+                                    <input class="method-input" type="radio" name="payment_method" value="EMI" {% if selected_payment_method == 'EMI' %}checked{% endif %}>
+                                    <span class="method-card">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <strong>EMI Plan</strong>
+                                        <span>Pay down payment now</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="field-label" for="{{ form.contact_number.id_for_label }}">Contact Number</label>
+                                {{ form.contact_number }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="field-label d-block">Reserve With Token</label>
+                                <div class="token-strip">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="is_token_booking" id="id_is_token_booking" {% if selected_is_token_booking %}checked{% endif %}>
+                                        <label class="form-check-label text-white fw-semibold" for="id_is_token_booking">
+                                            Book this car with a token payment of &#8377;50,000
+                                        </label>
+                                    </div>
+                                    <div class="small text-white-50 mt-2">Lock the vehicle first and complete the balance later.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="field-label" for="{{ form.shipping_address.id_for_label }}">Delivery / Shipping Address</label>
+                            {{ form.shipping_address }}
+                        </div>
+
+                        <div id="emi-panel" class="option-panel mb-4 {% if selected_payment_method != 'EMI' %}d-none{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h5 class="text-white fw-bold mb-1">EMI Breakdown</h5>
+                                    <p class="helper-note mb-0">Choose the tenure and down payment you want to authorize now.</p>
+                                </div>
+                                <span class="badge text-bg-warning">10% annual rate</span>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="field-label" for="{{ form.emi_months.id_for_label }}">Tenure</label>
+                                    {{ form.emi_months }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="field-label" for="{{ form.down_payment.id_for_label }}">Down Payment</label>
+                                    {{ form.down_payment }}
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-6">
+                                    <div class="metric-card">
+                                        <div class="metric-label">Monthly EMI</div>
+                                        <div class="metric-value" id="emi-preview">{% if monthly_installment_preview %}&#8377;{{ monthly_installment_preview|floatformat:0 }}{% else %}&#8377;0{% endif %}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="metric-card">
+                                        <div class="metric-label">Total Payable</div>
+                                        <div class="metric-value" id="emi-total-preview">&#8377;{{ total_payable_preview|floatformat:0 }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="option-panel mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="text-white fw-bold mb-1">Payment Confirmation</h5>
+                                    <p class="helper-note mb-0">After confirmation, you will be redirected to the secure payment gateway. Once payment is verified, your receipt will be generated automatically.</p>
+                                </div>
+                                <div class="text-end">
+                                    <div class="field-label mb-1">Confirm & Pay</div>
+                                    <div class="summary-total" id="gateway-amount">&#8377;{{ gateway_amount|floatformat:0 }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Confirm Payment & Generate Receipt</button>
+
+                        <div class="text-center mt-3">
+                            <a href="{% url 'cars:car_detail' car.vin %}" class="text-decoration-none text-white-50">
+                                <i class="fas fa-angle-left me-1"></i> Back to Review Specifications
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="vault-card summary-card p-4">
+                    <div class="car-preview">
+                        {% if car.car_image %}
+                        <img src="{{ car.car_image.url }}" alt="{{ car.brand }} {{ car.model }}">
+                        {% else %}
+                        <i class="fas fa-car-side fa-4x text-white-50"></i>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h4 class="text-white fw-bold mb-1">{{ car.brand }} {{ car.model }}</h4>
+                            <div class="text-white-50 small">{{ car.vin }} | {{ car.launch_year }}</div>
+                        </div>
+                        <span class="badge rounded-pill text-bg-success">Available</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="text-white-50">Vehicle Price</span>
+                        <strong class="text-white">&#8377;{{ final_price|floatformat:0 }}</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span class="text-white-50">Selected Method</span>
+                        <strong class="text-white" id="summary-method">{{ selected_payment_method }}</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span class="text-white-50">Token Booking</span>
+                        <strong class="{% if selected_is_token_booking %}text-success{% else %}text-white{% endif %}" id="summary-token">{% if selected_is_token_booking %}Enabled{% else %}No{% endif %}</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span class="text-white-50">Down Payment</span>
+                        <strong class="text-white" id="summary-down-payment">&#8377;{{ down_payment_preview|floatformat:0 }}</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span class="text-white-50">EMI Tenure</span>
+                        <strong class="text-white" id="summary-emi-months">{% if emi_months_preview %}{{ emi_months_preview }} Months{% else %}Not Selected{% endif %}</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span class="text-white-50">Gateway Charge</span>
+                        <strong class="summary-total" id="summary-gateway-charge">&#8377;{{ gateway_amount|floatformat:0 }}</strong>
+                    </div>
+
+                    <div class="mt-4 p-3 rounded-4" style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.18);">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-lock text-primary mt-1 me-3"></i>
+                            <div>
+                                <div class="text-white fw-semibold">Secure gateway handoff</div>
+                                <div class="small text-white-50">All payment methods continue through the same protected checkout flow. After successful verification, the purchase receipt is generated and opened automatically.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const carPrice = parseFloat('{{ final_price|floatformat:2 }}');
+        const tokenAmount = 50000;
+        const annualRate = 0.10;
+        const paymentInputs = document.querySelectorAll('input[name="payment_method"]');
+        const tokenInput = document.getElementById('id_is_token_booking');
+        const emiPanel = document.getElementById('emi-panel');
+        const emiMonths = document.getElementById('id_emi_months');
+        const downPayment = document.getElementById('id_down_payment');
+        const summaryMethod = document.getElementById('summary-method');
+        const summaryToken = document.getElementById('summary-token');
+        const summaryDownPayment = document.getElementById('summary-down-payment');
+        const summaryEmiMonths = document.getElementById('summary-emi-months');
+        const summaryGatewayCharge = document.getElementById('summary-gateway-charge');
+        const gatewayAmount = document.getElementById('gateway-amount');
+        const emiPreview = document.getElementById('emi-preview');
+        const emiTotalPreview = document.getElementById('emi-total-preview');
+
+        const formatCurrency = function (value) {
+            return '\u20B9' + Number(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        };
+
+        const getSelectedMethod = function () {
+            const checked = document.querySelector('input[name="payment_method"]:checked');
+            return checked ? checked.value : 'Cash';
+        };
+
+        const recalculate = function () {
+            const method = getSelectedMethod();
+            const tokenEnabled = tokenInput.checked;
+            const months = parseInt(emiMonths.value || '0', 10);
+            const down = parseFloat(downPayment.value || '0') || 0;
+            let gatewayCharge = carPrice;
+            let totalPayable = carPrice;
+            let emiMonthly = 0;
+
+            summaryMethod.textContent = method;
+            summaryToken.textContent = tokenEnabled ? 'Enabled' : 'No';
+            summaryToken.className = tokenEnabled ? 'text-success' : 'text-white';
+
+            if (method === 'EMI') {
+                emiPanel.classList.remove('d-none');
+                const principal = Math.max(carPrice - down, 0);
+                if (months > 0 && principal > 0) {
+                    const rate = annualRate / 12;
+                    emiMonthly = principal * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1);
+                    totalPayable = down + (emiMonthly * months);
+                }
+                gatewayCharge = down > 0 ? down : carPrice;
+            } else {
+                emiPanel.classList.add('d-none');
+            }
+
+            if (tokenEnabled) {
+                gatewayCharge = tokenAmount;
+            }
+
+            summaryDownPayment.textContent = formatCurrency(down);
+            summaryEmiMonths.textContent = months > 0 ? months + ' Months' : 'Not Selected';
+            summaryGatewayCharge.textContent = formatCurrency(gatewayCharge);
+            gatewayAmount.textContent = formatCurrency(gatewayCharge);
+            emiPreview.textContent = formatCurrency(emiMonthly);
+            emiTotalPreview.textContent = formatCurrency(totalPayable);
+        };
+
+        [paymentInputs, [tokenInput], [emiMonths], [downPayment]].forEach(function (group) {
+            Array.from(group).forEach(function (input) {
+                if (input) {
+                    input.addEventListener('change', recalculate);
+                    input.addEventListener('input', recalculate);
+                }
+            });
+        });
+
+        ['id_contact_number', 'id_shipping_address', 'id_emi_months', 'id_down_payment'].forEach(function (id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (el.tagName === 'SELECT') el.classList.add('vault-select', 'form-select');
+            else if (el.tagName === 'TEXTAREA') el.classList.add('vault-textarea', 'form-control');
+            else el.classList.add('vault-input', 'form-control');
+        });
+
+        recalculate();
+    });
+</script>
+{% endblock %}

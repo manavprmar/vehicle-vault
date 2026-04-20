@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Electric Vehicles | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<section class="cars-page">
+    <div class="section-header">
+        <div class="badge bg-success-subtle text-success mb-3"
+            style="border-radius: 20px; padding: 8px 20px; font-weight: 600; letter-spacing: 1px;">ZERO EMISSIONS</div>
+        <h2>Sustainable Luxury</h2>
+        <p>Experience the silent power and cutting-edge technology of our electric collection.</p>
+    </div>
+
+    <div class="car-grid">
+        {% for car in cars %}
+        <div class="car-card electric-card">
+            <div class="img-container">
+                {% if car.car_image %}
+                <img src="{{ car.car_image.url }}" alt="{{ car.brand }} {{ car.model }}">
+                {% else %}
+                <img src="{% static 'images/logo.png' %}" alt="Default Image">
+                {% endif %}
+                <div class="ev-tag position-absolute top-0 end-0 m-3"
+                    style="background: rgba(25, 135, 84, 0.9); color: white; border-radius: 12px; padding: 6px 14px; font-weight: 700; font-size: 0.75rem; backdrop-filter: blur(5px);">
+                    ⚡ EV
+                </div>
+            </div>
+
+            <div class="car-info">
+                <h3>{{ car.brand }} {{ car.model }}</h3>
+                <p class="price">₹{{ car.price }}</p>
+
+                <div class="d-flex gap-3 mb-4">
+                    <div class="eco-spec">
+                        <span class="text-muted d-block small">Range</span>
+                        <span class="fw-bold text-success">450 km</span>
+                    </div>
+                    <div class="eco-spec border-start ps-3">
+                        <span class="text-muted d-block small">0-100</span>
+                        <span class="fw-bold">3.8s</span>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mb-3">
+                    <a href="{% url 'cars:car_detail' car.vin %}" class="card-btn"
+                        style="background: linear-gradient(135deg, #10b981, #059669); color: white;">Explore Tech</a>
+                    <a href="{% url 'cars:add_to_compare' car.id %}" class="btn btn-sm btn-outline-secondary"
+                        style="border-radius: 12px; font-weight: 600;">+ Compare</a>
+                </div>
+
+                {% if user.is_authenticated %}
+                {% if user.role == 'Admin' or user == car.seller %}
+                <div class="mt-3 d-flex gap-2">
+                    <a href="{% url 'cars:car_edit' car.vin %}" class="btn btn-sm btn-outline-info w-100"
+                        style="border-radius: 10px;">Edit</a>
+                    <a href="{% url 'cars:car_delete' car.vin %}" class="btn btn-sm btn-outline-danger w-100"
+                        style="border-radius: 10px;" onclick="return confirm('Archive this vehicle?');">Delete</a>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center w-100 py-5">
+            <div class="fs-1 mb-4">🌱</div>
+            <p style="font-size: 1.2rem; color: var(--text-muted);">Charging up! Our electric inventory will be
+                available soon.</p>
+            <a href="{% url 'cars:all_cars' %}" class="login-btn mt-3">View All Vehicles</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<style>
+    .electric-card {
+        border: 1px solid rgba(16, 185, 129, 0.1);
+        transition: var(--transition);
+    }
+
+    .electric-card:hover {
+        border-color: #10b981;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+    }
+
+    .eco-spec span {
+        font-size: 0.85rem;
+    }
+</style>
+
+{% endblock %}

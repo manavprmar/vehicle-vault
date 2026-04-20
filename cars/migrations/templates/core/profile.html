@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block title %}My Profile | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="dashboard-container">
+    <div class="section-header">
+        <div class="badge px-4 py-2 mb-3 fw-700 text-uppercase d-inline-block"
+             style="background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); color:#38bdf8; letter-spacing:1.5px; border-radius:30px; font-size:0.8rem;">
+            Account Settings
+        </div>
+        <h2 class="text-white">Profile Management</h2>
+        <p class="text-white-50">Update your personal details and account preferences.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Avatar + Role Banner -->
+            <div class="d-flex align-items-center gap-4 mb-5 p-4 rounded-4"
+                 style="background:var(--bg-card); border:1px solid var(--glass-border);">
+                <div class="rounded-circle d-flex align-items-center justify-content-center fw-900 text-white"
+                     style="width:72px; height:72px; background:linear-gradient(135deg,#2563eb,#7c3aed); font-size:1.8rem; flex-shrink:0;">
+                    {% if user.profile_image %}
+                    <img src="{{ user.profile_image.url }}" alt="avatar"
+                         style="width:72px; height:72px; border-radius:50%; object-fit:cover;">
+                    {% else %}
+                        {{ user.name|default:user.email|make_list|first|upper }}
+                    {% endif %}
+                </div>
+                <div>
+                    <div class="fw-800 text-white fs-5">{{ user.name|default:"No name set" }}</div>
+                    <div class="text-white-50 small">{{ user.email }}</div>
+                    {% if user.role == 'Admin' %}
+                    <span class="badge rounded-pill mt-1 px-3 py-1 fw-700 role-badge-admin">{{ user.role }}</span>
+                    {% elif user.role == 'Seller' or user.role == 'Dealer' %}
+                    <span class="badge rounded-pill mt-1 px-3 py-1 fw-700 role-badge-seller">{{ user.role }}</span>
+                    {% else %}
+                    <span class="badge rounded-pill mt-1 px-3 py-1 fw-700 role-badge-buyer">{{ user.role }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Profile Form -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Personal Info -->
+                <div class="p-4 rounded-4 mb-4" style="background:var(--bg-card); border:1px solid var(--glass-border);">
+                    <h5 class="text-white fw-800 mb-4" style="border-left:3px solid var(--accent); padding-left:12px;">
+                        Personal Information
+                    </h5>
+                    <div class="row g-3">
+                        {% for field in user_form %}
+                        <div class="col-md-6">
+                            <label class="form-label text-white-50 small fw-700 text-uppercase mb-1"
+                                   style="letter-spacing:0.8px;">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Role-specific Profile Info -->
+                {% if profile_form %}
+                <div class="p-4 rounded-4 mb-4" style="background:var(--bg-card); border:1px solid var(--glass-border);">
+                    <h5 class="text-white fw-800 mb-4" style="border-left:3px solid #fbbf24; padding-left:12px;">
+                        {% if user.role == 'Buyer' %}Buyer Preferences{% else %}Dealership Details{% endif %}
+                    </h5>
+                    <div class="row g-3">
+                        {% for field in profile_form %}
+                        <div class="col-md-6">
+                            <label class="form-label text-white-50 small fw-700 text-uppercase mb-1"
+                                   style="letter-spacing:0.8px;">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Actions -->
+                <div class="d-flex gap-3 justify-content-end mt-2">
+                    {% if user.role == 'Admin' %}
+                        <a href="{% url 'core:admin_dashboard' %}" class="btn btn-outline-secondary rounded-pill px-4 fw-600">Cancel</a>
+                    {% elif user.role == 'Seller' or user.role == 'Dealer' %}
+                        <a href="{% url 'core:seller_dashboard' %}" class="btn btn-outline-secondary rounded-pill px-4 fw-600">Cancel</a>
+                    {% else %}
+                        <a href="{% url 'core:buyer_dashboard' %}" class="btn btn-outline-secondary rounded-pill px-4 fw-600">Cancel</a>
+                    {% endif %}
+                    <button type="submit" class="login-btn px-5 py-2 fw-800">
+                        <i class="fas fa-save me-2"></i>Save Changes
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    input.form-control, select.form-select, textarea.form-control {
+        background: rgba(2,6,23,0.4) !important;
+        border: 1px solid var(--glass-border);
+        color: #fff !important;
+        padding: 11px 16px;
+        border-radius: 12px;
+        transition: var(--transition);
+    }
+    input.form-control:focus, select.form-select:focus, textarea.form-control:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(56,189,248,0.08);
+        outline: none;
+    }
+    select.form-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2338bdf8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+        background-repeat: no-repeat !important;
+        background-position: right 1rem center !important;
+        background-size: 14px 10px !important;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+    /* Role badge colours — no Django template tags in CSS */
+    .role-badge-admin  { background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .role-badge-seller { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+    .role-badge-buyer  { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+</style>
+
+{% endblock %}

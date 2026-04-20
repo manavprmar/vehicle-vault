@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Certified Used Inventory | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="portal-container py-5">
+    <!-- Used Inventory Header -->
+    <div class="elite-header text-center mb-5 pb-4">
+        <div class="badge bg-primary-subtle text-primary mb-3 px-4 py-2 rounded-pill fw-800" style="letter-spacing: 2px; border: 1px solid rgba(0,123,255,0.2);">PRECISION CERTIFIED</div>
+        <h1 class="display-3 fw-900 text-white mb-3" style="letter-spacing: -2px;">Pre-Owned Masterpieces</h1>
+        <p class="lead text-white opacity-50 mx-auto" style="max-width: 600px;">Every vehicle undergoes a 200-point elite certification. Uncompromising quality, exceptional value.</p>
+    </div>
+
+    <!-- Used Grid -->
+    <div class="row g-4">
+        {% for car in cars %}
+        <div class="col-md-6 col-lg-4">
+            <div class="glass-card h-100 p-3 rounded-4 shadow-lg position-relative overflow-hidden" style="background: var(--bg-card); border: 1px solid var(--glass-border); transition: all 0.4s ease;">
+                <div class="img-container rounded-3 overflow-hidden position-relative mb-4" style="height: 220px;">
+                    {% if car.car_image %}
+                    <img src="{{ car.car_image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                    {% endif %}
+                    <div class="position-absolute top-0 start-0 m-3 px-3 py-2 rounded-3 text-white smallest fw-900" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 1px solid var(--accent);">
+                        VAULT CERTIFIED
+                    </div>
+                </div>
+
+                <div class="card-content px-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-accent smallest fw-800" style="letter-spacing: 1px;">PRE-OWNED EXCELLENCE</span>
+                        <span class="badge border border-light border-opacity-10 opacity-50 smallest fw-500">{{ car.launch_year }}</span>
+                    </div>
+                    <h3 class="h4 fw-800 text-white mb-2">{{ car.brand }} {{ car.model }}</h3>
+                    <div class="price-narrative mb-4">
+                        <span class="text-white h5 fw-800">₹{{ car.price }}</span>
+                    </div>
+
+                    <div class="row g-2 mb-4 text-center">
+                        <div class="col-4">
+                            <div class="p-2 rounded-3" style="background: rgba(255,255,255,0.02);">
+                                <div class="smallest opacity-50 text-white">KM</div>
+                                <div class="fw-800 text-white">12,400</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-2 rounded-3" style="background: rgba(255,255,255,0.02);">
+                                <div class="smallest opacity-50 text-white">Fuel</div>
+                                <div class="fw-800 text-white">{{ car.fuel_type }}</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-2 rounded-3" style="background: rgba(255,255,255,0.02);">
+                                <div class="smallest opacity-50 text-white">Owner</div>
+                                <div class="fw-800 text-white">1st</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'cars:car_detail' car.vin %}" class="btn btn-light rounded-pill fw-800 py-3 mb-2" style="background: #fff; color: #020617; border: none;">View Detail & Documents</a>
+                        <a href="{% url 'cars:add_to_compare' car.id %}" class="btn btn-outline-light border-opacity-10 rounded-pill fw-800 py-2 small">Compare Value</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="empty-state-icon mb-4" style="font-size: 4rem; opacity: 0.2;">🚗</div>
+            <h2 class="text-white fw-800">Vault Inventory Replenishing</h2>
+            <p class="text-white opacity-50">Our used masterpieces are currently undergoing certification. Check back shortly.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.glass-card:hover { border-color: var(--accent) !important; transform: scale(1.03); }
+</style>
+
+{% endblock %}

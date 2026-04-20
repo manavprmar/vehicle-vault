@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block title %}Buyer Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="section-header">
+        <h2 class="text-white">Buyer Dashboard</h2>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="dashboard-card h-100 p-4">
+                <div class="card-icon">🔍</div>
+                <h4 class="mt-2 text-white">Browse Cars</h4>
+                <p style="color: var(--text-muted);">Explore the latest additions to Vehicle Vault.</p>
+                <a href="{% url 'cars:all_cars' %}" class="card-btn mt-auto">Browse Now</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card h-100 p-4">
+                <div class="card-icon">❤️</div>
+                <h4 class="mt-2 text-white">Saved Listings</h4>
+                <p style="color: var(--text-muted);">View the cars you've favorited.</p>
+                <a href="{% url 'cars:wishlist' %}" class="card-btn mt-auto">View Favorites</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card h-100 p-4">
+                <div class="card-icon">💰</div>
+                <h4 class="mt-2 text-white">My Purchases</h4>
+                <p style="color: var(--text-muted);">View cars you've purchased and EMI details.</p>
+                <a href="#purchase-history" class="card-btn mt-auto">View Orders</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Negotiations & Activity Row -->
+    <div class="row g-4 mt-2">
+        <!-- Active Negotiations -->
+        <div class="col-lg-8">
+            <div class="p-4 rounded-4 shadow-sm" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-white fw-800 m-0">My Active Negotiations</h4>
+                    <a href="{% url 'cars:inbox' %}" class="smallest text-accent fw-700 text-decoration-none">Secure Inbox ›</a>
+                </div>
+                {% if deals %}
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0">
+                        <thead class="text-secondary smallest text-uppercase">
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Proposed</th>
+                                <th>Status</th>
+                                <th>Channel</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            {% for deal in deals %}
+                            <tr>
+                                <td class="small">{{ deal.listing.car }}</td>
+                                <td class="fw-700 text-white">₹{{ deal.offered_price }}</td>
+                                <td><span class="badge rounded-pill {% if deal.status == 'Accepted' %}bg-success{% elif deal.status == 'Rejected' %}bg-danger{% else %}bg-warning{% endif %} small">{{ deal.status }}</span></td>
+                                <td><a href="{% url 'cars:chat' deal.listing.seller.user_id %}?listing_id={{ deal.listing.listing_id }}" class="btn btn-sm btn-outline-accent rounded-pill px-3">Open Chat</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-white-50 smallest italic">No active negotiations. Browse the vault to make an offer.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-4">
+            <div class="p-4 rounded-4 shadow-sm h-100" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                <h4 class="text-white fw-800 mb-4">My Activity Logs</h4>
+                <div class="activity-feed">
+                    {% for log in activities %}
+                    <div class="d-flex gap-3 mb-3 border-bottom border-white-5 pb-2 opacity-75">
+                        <div class="activity-icon text-accent smallest"><i class="fas fa-history"></i></div>
+                        <div>
+                            <div class="text-white smaller fw-700">{{ log.action_type }}</div>
+                            <div class="smallest text-white-50">{{ log.timestamp|timesince }} ago</div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-4 text-white-50 smallest">No recent activities.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Drives Row -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="p-4 rounded-4 shadow-sm" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-white fw-800 m-0">My Scheduled Test Drives</h4>
+                </div>
+                {% if test_drives %}
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0">
+                        <thead class="text-secondary smallest text-uppercase">
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Proposed Date</th>
+                                <th>Approved Date</th>
+                                <th>Status</th>
+                                <th>Contact Seller</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            {% for drive in test_drives %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-2 me-3" style="width: 40px; height: 30px; background: #eef5ff; overflow: hidden;">
+                                            {% if drive.listing.car.car_image %}
+                                                <img src="{{ drive.listing.car.car_image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                                            {% endif %}
+                                        </div>
+                                        <span class="small fw-700">{{ drive.listing.car }}</span>
+                                    </div>
+                                </td>
+                                <td class="small">{{ drive.proposed_date|date:"M d, Y" }}</td>
+                                <td class="small text-accent">{% if drive.actual_date %}{{ drive.actual_date|date:"M d, Y" }}{% else %}Waiting for seller approval{% endif %}</td>
+                                <td>
+                                    <span class="badge rounded-pill {% if drive.status == 'Confirmed' %}bg-success{% elif drive.status == 'Cancelled' %}bg-danger{% elif drive.status == 'Completed' %}bg-primary{% else %}bg-warning text-dark{% endif %} small">
+                                        {% if drive.status == 'Confirmed' %}Approved{% else %}{{ drive.status }}{% endif %}
+                                    </span>
+                                </td>
+                                <td><a href="{% url 'cars:chat' drive.listing.seller.user_id %}?listing_id={{ drive.listing.listing_id }}" class="btn btn-sm btn-outline-light rounded-pill px-3">Message</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-white-50 smallest italic">No upcoming test drives scheduled. Experience an asset in person today!</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase History Section -->
+    <div id="purchase-history" class="mt-5 p-4 rounded-4" style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <h3 class="fw-bold mb-4 text-white">Purchase History</h3>
+        {% if purchases %}
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="text-secondary small text-uppercase">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Car</th>
+                            <th>Price</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for purchase in purchases %}
+                            <tr>
+                                <td class="small">{{ purchase.purchase_id|stringformat:".8s" }}...</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-2 me-3" style="width: 40px; height: 30px; background: #eef5ff; overflow: hidden;">
+                                            {% if purchase.car.car_image %}
+                                                <img src="{{ purchase.car.car_image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                                            {% endif %}
+                                        </div>
+                                        <span>{{ purchase.car.brand }} {{ purchase.car.model }}</span>
+                                    </div>
+                                </td>
+                                <td>₹{{ purchase.price }}</td>
+                                <td>{{ purchase.payment_method }}</td>
+                                <td><span class="badge bg-success rounded-pill">{{ purchase.payment_status }}</span></td>
+                                <td class="small">{{ purchase.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'cars:purchase_success' purchase.purchase_id %}" class="btn btn-sm btn-outline-primary rounded-pill">View Details</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-cart-x display-4 text-muted mb-3 d-block"></i>
+                <p class="text-muted">You haven't made any purchases yet.</p>
+                <a href="{% url 'cars:all_cars' %}" class="btn btn-primary rounded-pill px-4">Browse Cars</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

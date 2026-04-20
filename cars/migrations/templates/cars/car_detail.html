@@ -1,0 +1,758 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ car.brand }} {{ car.model }} | Vehicle Vault{% endblock %}
+
+{% block extra_head %}
+<!-- Google Model Viewer -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+<style>
+    model-viewer {
+        width: 100%;
+        height: 500px;
+        background-color: #eef5ff;
+        --poster-color: transparent;
+    }
+    .modal-3d {
+        max-width: 900px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Professional Luxury Car Detail Styles */
+    body {
+        background-color: var(--bg-dark);
+    }
+
+    /* Hero Banner Area */
+    .hero-section {
+        position: relative;
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(255, 255, 255, 0.98));
+        padding: 60px 0;
+        color: var(--text-main);
+        overflow: hidden;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 50%);
+        pointer-events: none;
+    }
+
+    .car-title {
+        font-weight: 800;
+        font-size: 3.5rem;
+        background: linear-gradient(to right, var(--primary-dark), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+
+    .car-subtitle {
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* Image Showcase Centerpiece */
+    .showcase-container {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
+        background: #eef5ff;
+        margin-top: -30px;
+        position: relative;
+        z-index: 10;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .showcase-image {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        object-position: center;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        transition: transform 0.5s ease;
+    }
+
+    .showcase-container:hover .showcase-image {
+        transform: scale(1.02);
+    }
+
+    /* Specifications Grid */
+    .specs-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--glass-border);
+        height: 100%;
+    }
+
+    .spec-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--glass-border);
+    }
+
+    .spec-item:last-child {
+        border-bottom: none;
+    }
+
+    .spec-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        background: rgba(14, 165, 233, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: var(--accent);
+        margin-right: 15px;
+    }
+
+    .spec-content h6 {
+        color: #64748b;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+        font-weight: 600;
+    }
+
+    .spec-content p {
+        color: var(--text-main);
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    /* Pricing & Action Sidebar */
+    .price-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 247, 255, 1));
+        border-radius: 20px;
+        padding: 35px;
+        color: var(--text-main);
+        box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+        position: sticky;
+        top: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .price-label {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .price-amount {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 25px;
+        color: var(--primary-dark);
+    }
+
+    .seller-badge {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 12px;
+        margin-bottom: 25px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .seller-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--brand-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 15px;
+    }
+
+    .btn-action-primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border: none;
+        color: white;
+        padding: 16px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .btn-action-primary:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        color: white;
+    }
+
+    .btn-action-secondary {
+        background: transparent;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        color: var(--text-main);
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+    }
+
+    .btn-action-secondary:hover {
+        background: #eff6ff;
+        color: var(--text-main);
+        border-color: rgba(37, 99, 235, 0.28);
+    }
+
+    .status-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(8px);
+        padding: 8px 16px;
+        border-radius: 30px;
+        color: var(--text-main);
+        font-weight: 600;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        z-index: 20;
+    }
+</style>
+
+<!-- Hero Title Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <div class="car-subtitle mb-2">{{ car.launch_year }} MODEL {{ car.category.name|default:"" }}</div>
+
+        <div class="d-flex justify-content-center gap-3 mb-3">
+            {% if car.is_upcoming %}
+            <span class="badge rounded-pill bg-warning text-dark px-3 py-2 fw-bold"
+                style="letter-spacing: 1px; font-size: 0.85rem;">
+                <i class="fas fa-clock me-1"></i> UPCOMING PREVIEW
+            </span>
+            {% endif %}
+
+            {% if car.is_electric %}
+            <span class="badge rounded-pill bg-info text-dark px-3 py-2 fw-bold"
+                style="letter-spacing: 1px; font-size: 0.85rem;">
+                <i class="fas fa-bolt me-1"></i> ELECTRIC VEHICLE
+            </span>
+            {% endif %}
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center gap-4">
+            {% if brand.logo %}
+            <img src="{{ brand.logo.url }}" alt="{{ car.brand }}" style="height: 60px; filter: brightness(0) invert(1);">
+            {% endif %}
+            <h1 class="car-title m-0">{{ car.brand }} {{ car.model }}</h1>
+        </div>
+    </div>
+</section>
+
+<div class="container mb-5">
+    <!-- Main Showcase Image -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+            <div class="showcase-container">
+                {% if car.is_available %}
+                <div class="status-badge"><span style="color: #4ade80;">●</span> Available Now</div>
+                {% else %}
+                <div class="status-badge"><span style="color: #f87171;">●</span> Out of Stock</div>
+                {% endif %}
+
+                {% if car.gallery.exists %}
+                <div id="carGalleryCarousel" class="carousel slide w-100" data-bs-ride="carousel" style="border-radius: 20px; overflow: hidden;">
+                    <div class="carousel-indicators">
+                        {% for img in car.gallery.all %}
+                        <button type="button" data-bs-target="#carGalleryCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner w-100" style="height: 500px;">
+                        {% for img in car.gallery.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %} h-100 w-100">
+                            <img src="{{ img.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ car.brand }} angle {{ forloop.counter }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carGalleryCarousel" data-bs-slide="prev" style="width: 10%;">
+                        <span class="carousel-control-prev-icon bg-dark bg-opacity-75 p-3 rounded-circle shadow-lg" aria-hidden="true" style="width: 40px; height: 40px;"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carGalleryCarousel" data-bs-slide="next" style="width: 10%;">
+                        <span class="carousel-control-next-icon bg-dark bg-opacity-75 p-3 rounded-circle shadow-lg" aria-hidden="true" style="width: 40px; height: 40px;"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                {% elif car.car_image %}
+                <img src="{{ car.car_image.url }}" alt="{{ car.brand }} {{ car.model }}" class="showcase-image" style="border-radius: 20px; width: 100%; height: 500px; object-fit: cover;">
+                {% else %}
+                <img src="{% static 'images/placeholder-car.png' %}" alt="Placeholder" class="showcase-image" style="border-radius: 20px; width: 100%; height: 500px; object-fit: cover;">
+                {% endif %}
+
+                <!-- 3D Toggle Overlay -->
+                <div class="position-absolute bottom-0 end-0 m-4">
+                    <button class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-lg border-0" 
+                            style="background: linear-gradient(135deg, #6366f1, #4f46e5);"
+                            data-bs-toggle="modal" data-bs-target="#modal3D">
+                        <i class="fas fa-cube me-2"></i> Launch 3D Showroom
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-start">
+        <!-- Left Column: Specs & Details -->
+        <div class="col-lg-8 mb-4">
+            <h3 class="fw-bold mb-4 text-white">Vehicle Specifications</h3>
+
+            <div class="specs-card">
+                <div class="row">
+                    <!-- Spec 1: Brand -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">📛</div>
+                            <div class="spec-content">
+                                <h6>Brand Make</h6>
+                                <p>{{ car.brand }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spec 2: Model -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">🚗</div>
+                            <div class="spec-content">
+                                <h6>Model Designation</h6>
+                                <p>{{ car.model }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spec 3: Year -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">📅</div>
+                            <div class="spec-content">
+                                <h6>Launch Year</h6>
+                                <p>{{ car.launch_year }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spec 4: Mileage -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">⏱</div>
+                            <div class="spec-content">
+                                <h6>Mileage</h6>
+                                <p>{{ car.mileage }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spec 5: VIN -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">🔢</div>
+                            <div class="spec-content">
+                                <h6>VIN Number</h6>
+                                <p style="font-family: monospace; letter-spacing: 1px;">{{ car.vin }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spec 6: Stock -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">📦</div>
+                            <div class="spec-content">
+                                <h6>Units in Vault</h6>
+                                <p>{{ car.stock }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perf 1: Horsepower -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">🐎</div>
+                            <div class="spec-content">
+                                <h6>Horsepower</h6>
+                                <p>{{ car.horsepower|default:"N/A" }} HP</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perf 2: Torque -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">🌀</div>
+                            <div class="spec-content">
+                                <h6>Peak Torque</h6>
+                                <p>{{ car.torque|default:"N/A" }} NM</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perf 3: 0-100 -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">🚀</div>
+                            <div class="spec-content">
+                                <h6>Acceleration (0-100)</h6>
+                                <p>{{ car.acceleration_0_100|default:"N/A" }} Seconds</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perf 4: Top Speed -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">🏁</div>
+                            <div class="spec-content">
+                                <h6>Top Speed</h6>
+                                <p>{{ car.top_speed|default:"N/A" }} KM/H</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perf 5: Safety -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">🛡️</div>
+                            <div class="spec-content">
+                                <h6>Safety Rating</h6>
+                                <p>{{ car.safety_rating }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perf 6: Capacity -->
+                    <div class="col-md-6">
+                        <div class="spec-item">
+                            <div class="spec-icon">💺</div>
+                            <div class="spec-content">
+                                <h6>Seating Capacity</h6>
+                                <p>{{ car.seating_capacity }} Persons</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pros & Cons Section -->
+            <div class="mt-5">
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="p-4 rounded-4" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <h5 class="text-success fw-bold mb-3"><i class="fas fa-check-circle me-2"></i> Vault Pros</h5>
+                            <ul class="text-white-50 small mb-0 ps-3">
+                                <li class="mb-2">Exceptional Build Quality</li>
+                                <li class="mb-2">Advanced Driving Dynamics</li>
+                                <li>State-of-the-Art Infotainment</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-4 rounded-4" style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2);">
+                            <h5 class="text-danger fw-bold mb-3"><i class="fas fa-exclamation-triangle me-2"></i> Vault Considerations</h5>
+                            <ul class="text-white-50 small mb-0 ps-3">
+                                <li class="mb-2">Premium Maintenance Costs</li>
+                                <li>Limited Rear visibility</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description Area -->
+            <div class="mt-5">
+                <h4 class="fw-bold mb-3 text-white">Vault Overview</h4>
+                <p style="color: var(--text-muted); line-height: 1.8; font-size: 1.05rem;" class="mb-5">
+                    The {{ car.launch_year }} {{ car.brand }} {{ car.model }} is a premium selection from the Vehicle
+                    Vault curated collection.
+                    Renowned for superior engineering and uncompromising luxury, this vehicle has been carefully sourced
+                    to meet the highest
+                    standards of performance and aesthetics. Contact the seller below to arrange a secure transaction.
+                </p>
+
+                <!-- Interactive EMI Calculator -->
+                <h4 class="fw-bold mb-4 text-white"><i class="fas fa-calculator text-accent me-2"></i> EMI Estimator
+                </h4>
+                <div class="specs-card mb-4" id="emi-calculator">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-7 pe-md-4" style="border-right: 1px solid var(--glass-border);">
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <label class="form-label text-muted fw-600 mb-0">Down Payment (₹)</label>
+                                    <span class="text-white fw-bold" id="down-payment-display">₹0</span>
+                                </div>
+                                <input type="range" class="form-range" id="down-payment" min="0"
+                                    max="{{ car.price|floatformat:'0' }}" step="10000" value="0">
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <label class="form-label text-muted fw-600 mb-0">Interest Rate (%)</label>
+                                    <span class="text-white fw-bold" id="interest-rate-display">9.5%</span>
+                                </div>
+                                <input type="range" class="form-range" id="interest-rate" min="7" max="15" step="0.1"
+                                    value="9.5">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <label class="form-label text-muted fw-600 mb-0">Loan Tenure (Years)</label>
+                                    <span class="text-white fw-bold" id="loan-tenure-display">5 Years</span>
+                                </div>
+                                <input type="range" class="form-range" id="loan-tenure" min="1" max="7" step="1"
+                                    value="5">
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 text-center px-4">
+                            <div class="p-4 rounded-4"
+                                style="background: rgba(255,255,255,0.96); border: 1px solid rgba(148,163,184,0.16); box-shadow: 0 12px 24px rgba(15,23,42,0.04);">
+                                <h5 class="text-muted fw-bold mb-3"
+                                    style="font-size: 0.9rem; text-transform: uppercase;">Estimated Monthly EMI</h5>
+                                <h2 class="text-white fw-900 mb-3" id="emi-result"
+                                    style="font-size: 2.5rem; letter-spacing: -1px;">₹0</h2>
+                                <p class="smallest text-white-50 mb-0">* Indicative figures purely for estimation
+                                    purposes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Pricing & Actions Sticky Sidebar -->
+        <div class="col-lg-4">
+            <div class="price-card">
+                <div class="price-label">Vault Asking Price</div>
+                <div class="price-amount">₹{{ car.price|floatformat:"0" }}</div>
+
+                {% with listing=car.listings.first %}
+                <div class="seller-badge">
+                    <div class="seller-avatar">
+                        {% if listing %}
+                            {{ listing.seller.name|default:listing.seller.email|make_list|first|upper }}
+                        {% else %}
+                            V
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; text-transform: uppercase;">Listed By</div>
+                        <div style="font-weight: 600; color: white;">
+                            {% if listing %}
+                                {{ listing.seller.name|default:listing.seller.email }}
+                            {% else %}
+                                Vault Core Inventory
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mb-4 mt-2">
+                    <a href="{% url 'cars:add_to_compare' car.id %}" class="btn-action-secondary flex-grow-1"
+                        style="border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.02);">
+                        ⚖️ Compare
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'cars:toggle_wishlist' car.id %}?next={{ request.path }}" class="btn-action-secondary px-4"
+                        style="border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.02);"
+                        title="{% if is_wishlisted %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}">
+                        {% if is_wishlisted %}❤️{% else %}🤍{% endif %}
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid gap-3">
+                    {% if user.is_authenticated %}
+                        {% if user.role == 'Buyer' %}
+                            <a href="{% url 'cars:purchase_car' car.vin %}" class="btn-action-primary" style="background: linear-gradient(135deg, #10b981, #059669); border: none; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);">
+                                <i class="bi bi-bag-check me-2"></i> <span>Buy Now</span>
+                            </a>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    {% if listing %}
+                                    <a href="{% url 'cars:propose_deal' listing.listing_id %}" class="btn-action-secondary py-2" style="font-size: 0.85rem;">Make Offer</a>
+                                    {% else %}
+                                    <button disabled class="btn-action-secondary py-2 opacity-50" style="font-size: 0.85rem;">Not Listed</button>
+                                    {% endif %}
+                                </div>
+                                <div class="col-6">
+                                    {% if listing and listing.seller.user_id %}
+                                    <a href="{% url 'cars:chat' listing.seller.user_id %}?listing_id={{ listing.listing_id }}" class="btn-action-secondary py-2" style="font-size: 0.85rem;">Message</a>
+                                    {% else %}
+                                    <button disabled class="btn-action-secondary py-2 opacity-50" style="font-size: 0.85rem;">Not Listed</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <a href="{% url 'cars:schedule_test_drive' car.vin %}" class="btn btn-outline-accent w-100 fw-700 py-3 rounded-pill mt-2">
+                                <i class="fas fa-calendar-check me-2"></i>Request Test Drive
+                            </a>
+                        {% elif user == car.seller or user.role == 'Admin' %}
+                            <a href="{% url 'cars:car_edit' car.vin %}" class="btn-action-secondary mb-2" style="border-color: #3b82f6; color: #60a5fa;">Edit Asset</a>
+                            <a href="{% url 'cars:car_delete' car.vin %}" class="btn-action-secondary" style="border-color: #ef4444; color: #f87171;" onclick="return confirm('Vault Security: Purge this asset?')">Delete Asset</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'core:login' %}" class="btn-action-primary">Login to Inquire</a>
+                    {% endif %}
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{% url 'cars:all_cars' %}"
+                        style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">
+                        ← Back to Inventory
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+    </div>
+
+    <!-- Similar Cars Section -->
+    {% if similar_cars %}
+    <div class="mt-5 pt-5 pb-3" style="border-top: 1px solid var(--glass-border);">
+        <h3 class="fw-bold mb-4 text-white">Similar Vehicles in the Vault</h3>
+        <div class="row g-4">
+            {% for sim_car in similar_cars %}
+            <div class="col-md-3">
+                <div class="card bg-transparent border-0 h-100" style="transition: transform 0.3s ease;">
+                    <a href="{% url 'cars:car_detail' sim_car.vin %}" class="text-decoration-none d-block h-100 pb-3"
+                        style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--glass-border); overflow: hidden;">
+                        <div style="height: 150px; background: #eef5ff;"
+                            class="d-flex align-items-center justify-content-center">
+                            {% if sim_car.car_image %}
+                            <img src="{{ sim_car.car_image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                            {% else %}
+                            <img src="{% static 'images/placeholder-car.jpg' %}" class="w-100 h-100"
+                                style="object-fit: cover;">
+                            {% endif %}
+                        </div>
+                        <div class="p-3">
+                            <h6 class="text-white fw-800 mb-1">{{ sim_car.brand }} {{ sim_car.model }}</h6>
+                            <p class="text-muted small mb-0">{{ sim_car.launch_year }} • ₹{{ sim_car.price }}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Safely pass the python variable to JS.
+        const carPrice = parseFloat("{{ car.price|stringformat:'f'|default:'0' }}");
+        const dpInput = document.getElementById("down-payment");
+        const irInput = document.getElementById("interest-rate");
+        const ltInput = document.getElementById("loan-tenure");
+
+        const dpDisplay = document.getElementById("down-payment-display");
+        const irDisplay = document.getElementById("interest-rate-display");
+        const ltDisplay = document.getElementById("loan-tenure-display");
+        const emiResult = document.getElementById("emi-result");
+
+        // Format number to INR currency locale
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-IN').format(Math.round(amount));
+        };
+
+        function calculateEMI() {
+            const P = carPrice - parseFloat(dpInput.value); // Principal amount
+            const R = parseFloat(irInput.value) / 12 / 100; // Monthly interest rate
+            const N = parseFloat(ltInput.value) * 12; // Tenure in months
+
+            // Update displays
+            dpDisplay.textContent = "₹" + formatCurrency(dpInput.value);
+            irDisplay.textContent = irInput.value + "%";
+            ltDisplay.textContent = ltInput.value + " Years";
+
+            if (P <= 0 || R === 0 || N === 0) {
+                emiResult.textContent = "₹0";
+                return;
+            }
+
+            // EMI Formula: P * R * (1+R)^N / ((1+R)^N - 1)
+            const emi = P * R * Math.pow(1 + R, N) / (Math.pow(1 + R, N) - 1);
+            emiResult.textContent = "₹" + formatCurrency(emi);
+        }
+
+        // Attach event listeners
+        dpInput.addEventListener("input", calculateEMI);
+        irInput.addEventListener("input", calculateEMI);
+        ltInput.addEventListener("input", calculateEMI);
+
+        // Initial rendering
+        calculateEMI();
+    });
+</script>
+
+<!-- 3D View Modal -->
+<div class="modal fade" id="modal3D" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-2xl">
+            <div class="modal-header border-0 p-4 bg-gradient-to-r from-blue-900 to-slate-900">
+                <h5 class="modal-title text-white fw-bold"><i class="fas fa-vr-cardboard me-2"></i> 3D Virtual Showroom: {{ car.brand }} {{ car.model }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 position-relative">
+                <model-viewer src="{{ car.three_d_model_url|default:'https://modelviewer.dev/shared-assets/models/Astronaut.glb' }}"
+                              ios-src=""
+                              alt="A 3D model of a car"
+                              shadow-intensity="1"
+                              camera-controls
+                              auto-rotate
+                              ar
+                              style="width: 100%; height: 500px; background: radial-gradient(circle, #1e293b, #0f172a);">
+                </model-viewer>
+                
+                <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                    <div class="d-flex justify-content-between align-items-center text-white-50 small">
+                        <span><i class="fas fa-mouse me-2"></i> Drag to Rotate</span>
+                        <span><i class="fas fa-expand me-2"></i> Pinch to Zoom</span>
+                        <span><i class="fas fa-mobile-alt me-2"></i> AR Compatible</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

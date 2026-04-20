@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Car Valuation | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="loan-page-header text-center text-lg-start mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3 fw-800">PRECISION VALUATION</span>
+                <h1 class="display-4 fw-900 mb-4 text-white">Know the True Value.<br><span class="text-accent">In
+                        Seconds.</span></h1>
+                <p class="lead mb-4 text-muted">Our proprietary algorithm analyzes thousands of data points to give you
+                    the most accurate market price for your masterpiece.</p>
+                <div class="d-flex flex-wrap gap-4 mb-4 justify-content-center justify-content-lg-start">
+                    <div class="stat-item">
+                        <div class="h3 fw-900 m-0 text-white">500+</div>
+                        <div class="smallest text-muted text-uppercase fw-800">Data Sources</div>
+                    </div>
+                    <div class="stat-item border-start ps-4" style="border-color: var(--glass-border) !important;">
+                        <div class="h3 fw-900 m-0 text-white">98%</div>
+                        <div class="smallest text-muted text-uppercase fw-800">Accuracy Rate</div>
+                    </div>
+                </div>
+                <a href="{% url 'core:valuation_check' %}"
+                    class="btn btn-warning rounded-pill px-5 py-3 fw-900 shadow-lg text-dark">EVALUATE NOW</a>
+            </div>
+            <div class="col-lg-5 text-center mt-5 mt-lg-0">
+                <div class="hero-icon-display p-5 h1 m-0" style="font-size: 8rem; opacity: 0.8;">📊</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Factors Section -->
+    <h2 class="fw-900 text-white text-center mb-5">Factors that Define Value</h2>
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="calc-card p-4 text-center">
+                <div class="h2 mb-3">📅</div>
+                <h6 class="fw-800 text-white mb-2">Age & Model</h6>
+                <p class="smallest text-muted mb-0">Depreciation trends and variant popularity.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="calc-card p-4 text-center">
+                <div class="h2 mb-3">🛣️</div>
+                <h6 class="fw-800 text-white mb-2">Kilometers driven</h6>
+                <p class="smallest text-muted mb-0">Usage intensity and engine health markers.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="calc-card p-4 text-center">
+                <div class="h2 mb-3">👤</div>
+                <h6 class="fw-800 text-white mb-2">Ownership History</h6>
+                <p class="smallest text-muted mb-0">Number of owners and service consistency.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="calc-card p-4 text-center">
+                <div class="h2 mb-3">✨</div>
+                <h6 class="fw-800 text-white mb-2">Physical Condition</h6>
+                <p class="smallest text-muted mb-0">Exterior polish and interior maintenance.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Roadmap -->
+    <div class="calc-card p-5 mb-5 overflow-hidden position-relative">
+        <div class="position-absolute top-0 end-0 p-5 mt-n5 me-n5 display-1 opacity-10"
+            style="transform: rotate(15deg);">📜</div>
+        <h2 class="fw-900 text-white mb-5">The Valuation Journey</h2>
+        <div class="row g-4 step-roadmap">
+            <div class="col-lg-4">
+                <div class="d-flex align-items-start gap-4">
+                    <div class="step-number h1 fw-900 text-accent opacity-20 m-0">01</div>
+                    <div>
+                        <h5 class="fw-800 text-white">Digital Audit</h5>
+                        <p class="small text-muted mb-0">Input your vehicle stats into our AI-powered engine for an
+                            instant range.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="d-flex align-items-start gap-4 border-lg-start ps-lg-4"
+                    style="border-color: var(--glass-border) !important;">
+                    <div class="step-number h1 fw-900 text-accent opacity-20 m-0">02</div>
+                    <div>
+                        <h5 class="fw-800 text-white">Physical Validation</h5>
+                        <p class="small text-muted mb-0">Schedule a 10-minute doorstep audit by a Vault expert to verify
+                            the condition.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="d-flex align-items-start gap-4 border-lg-start ps-lg-4"
+                    style="border-color: var(--glass-border) !important;">
+                    <div class="step-number h1 fw-900 text-accent opacity-20 m-0">03</div>
+                    <div>
+                        <h5 class="fw-800 text-white">Instant Settlement</h5>
+                        <p class="small text-muted mb-0">Receive a final price and get payment credited to your account
+                            instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{% url 'core:valuation_check' %}"
+            class="btn btn-primary rounded-pill px-5 py-3 fw-900 shadow-lg h5 mb-0">GET MY VALUATION CERTIFICATE</a>
+    </div>
+</div>
+{% endblock %}

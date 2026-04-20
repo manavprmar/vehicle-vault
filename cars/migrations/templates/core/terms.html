@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Terms of Engagement | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="sticky-top" style="top: 100px;">
+                <h6 class="text-white-50 smallest fw-900 tracking-widest text-uppercase mb-4">Legal Framework</h6>
+                <nav class="privacy-nav flex-column">
+                    <a href="#conduct"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">User
+                        Conduct</a>
+                    <a href="#transactions"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">Transaction
+                        Protocols</a>
+                    <a href="#property"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">Intellectual
+                        Property</a>
+                    <a href="#liability"
+                        class="nav-link py-2 ps-0 text-white-50 hover-text-accent transition-all fw-800 border-start border-white/5 ps-3">Liability
+                        & Indemnity</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Terms Content -->
+        <div class="col-lg-9">
+            <div class="glass-card p-4 p-md-5 rounded-4 shadow-lg"
+                style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+                <!-- Header -->
+                <div class="mb-5 border-bottom border-white/5 pb-4">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3 fw-800">RULES OF
+                        ENGAGEMENT</span>
+                    <h1 class="display-4 fw-900 text-white mb-3">Terms of <span class="text-accent">Service</span></h1>
+                    <p class="text-muted lead">By accessing the Vehicle Vault ecosystem, you enter into a binding
+                        agreement to maintain the integrity and excellence of our elite automotive community.</p>
+                </div>
+
+                <!-- Section: Conduct -->
+                <section id="conduct" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-user-check"></i></div>
+                        <h3 class="fw-800 text-white m-0">1. Account Conduct</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>Membership in the Vault is a privilege reserved for serious automotive enthusiasts and
+                            verified sellers. Users must:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-3 d-flex gap-3">
+                                <i class="fas fa-shield-alt text-accent mt-1"></i>
+                                <span>Provide authentic identification and vehicle documentation for all
+                                    listings.</span>
+                            </li>
+                            <li class="mb-3 d-flex gap-3">
+                                <i class="fas fa-shield-alt text-accent mt-1"></i>
+                                <span>Maintain professional decorum during test drive appointments and physical
+                                    inspections.</span>
+                            </li>
+                            <li class="mb-3 d-flex gap-3">
+                                <i class="fas fa-shield-alt text-accent mt-1"></i>
+                                <span>Refrain from any attempts to circumvent the platform's secure communication
+                                    protocols.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Section: Transactions -->
+                <section id="transactions" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-file-contract"></i></div>
+                        <h3 class="fw-800 text-white m-0">2. Transaction Protocols</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>Our platform facilitates connectivity; however, ultimate transaction integrity rests on
+                            compliance with Vault standards:</p>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="calc-card p-4 h-100">
+                                    <h6 class="text-white fw-800 mb-2 small">Verification Shield</h6>
+                                    <p class="smallest m-0">All P2P transactions are subject to our 200-point validation
+                                        logic before final listing approval.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="calc-card p-4 h-100">
+                                    <h6 class="text-white fw-800 mb-2 small">Escrow Intelligence</h6>
+                                    <p class="smallest m-0">While we provide the infrastructure, financial settlements
+                                        must follow our verified partner protocols.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Property -->
+                <section id="property" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-copyright"></i></div>
+                        <h3 class="fw-800 text-white m-0">3. Intellectual Property</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>The digital architecture, curation algorithms, and brand assets of Vehicle Vault are
+                            protected masterpieces:</p>
+                        <div class="p-4 rounded-4 bg-dark/20 border border-white/5 mb-4">
+                            <p class="smallest m-0">Users are granted a limited, non-transferable license to browse the
+                                Vault. Any extraction of data, scraping of elite listings, or replication of UI
+                                components is strictly prohibited and will be met with immediate legal recourse.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Liability -->
+                <section id="liability" class="mb-5 scroll-margin-top">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h3 m-0 text-accent"><i class="fas fa-gavel"></i></div>
+                        <h3 class="fw-800 text-white m-0">4. Liability & Indemnity</h3>
+                    </div>
+                    <div class="text-muted">
+                        <p>While the Vault implements rigorous security, users acknowledge the following limitations:
+                        </p>
+                        <div class="bg-white/5 p-4 rounded-4 border border-white/10 mb-4">
+                            <p class="smallest mb-2"><strong>As-Is Architecture:</strong> The platform is provided as an
+                                elite discovery tool. We do not guarantee the structural integrity of vehicles listed by
+                                3rd-party sellers.</p>
+                            <p class="smallest m-0"><strong>Indemnification:</strong> You agree to hold Vehicle Vault
+                                harmless against any claims arising from your conduct during test drives or P2P
+                                negotiations.</p>
+                        </div>
+                        <p class="m-0 smallest">For complex legal clarifications, contact our <a
+                                href="{% url 'core:contact' %}"
+                                class="text-accent text-decoration-none fw-800">Compliance Desk ›</a></p>
+                    </div>
+                </section>
+
+                <!-- Footer Summary -->
+                <div class="mt-5 pt-4 border-top border-white/5 text-center opacity-50 smallest">
+                    COMPLIANCE VERSION: 3.1.0 | LAST AUDITED: FEBRUARY 2026
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .scroll-margin-top {
+        scroll-margin-top: 120px;
+    }
+
+    .privacy-nav .nav-link:hover,
+    .privacy-nav .nav-link.active {
+        color: var(--accent) !important;
+        border-color: var(--accent) !important;
+    }
+
+    .text-accent {
+        color: var(--accent) !important;
+    }
+
+    .smallest {
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .hover-text-accent:hover {
+        color: var(--accent) !important;
+    }
+</style>
+{% endblock %}

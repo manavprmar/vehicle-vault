@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Help Center | Vehicle Vault{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="glass-card p-5 rounded-4 shadow-lg text-white"
+        style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <h1 class="display-5 fw-900 mb-2 text-white">Vault Help Center</h1>
+        <p class="lead mb-5" style="color: var(--text-white);">Find answers, get support, and navigate the elite car
+            discovery universe.</p>
+
+        <style>
+            .help-search-input::placeholder {
+                color: rgba(255, 255, 255, 0.6) !important;
+                font-weight: 500;
+            }
+        </style>
+
+        <div class="search-bar p-4 rounded-4 mb-5"
+            style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); transition: var(--transition);">
+            <div class="input-group">
+                <input type="text" class="form-control bg-transparent text-white border-0 py-2 help-search-input"
+                    placeholder="Search for topics, articles or guides..." style="outline: none; box-shadow: none;">
+                <button class="btn btn-primary rounded-pill px-4 ms-2 fw-800">Search Hub</button>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-4 rounded-4 h-100"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                    <div class="h4 mb-3">👤</div>
+                    <h5 class="fw-800 text-white">Account Support</h5>
+                    <ul class="list-unstyled" style="font-size: 0.85rem; color: var(--text-muted);">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none transition-all"
+                                style="opacity: 0.8;">Resetting your password</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none transition-all"
+                                style="opacity: 0.8;">Managing your profile</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 rounded-4 h-100"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                    <div class="h4 mb-3">🏎️</div>
+                    <h5 class="fw-800 text-white">Buying & Selling</h5>
+                    <ul class="list-unstyled" style="font-size: 0.85rem; color: var(--text-muted);">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none transition-all"
+                                style="opacity: 0.8;">How to list a vehicle</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none transition-all"
+                                style="opacity: 0.8;">Booking a test drive</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 rounded-4 h-100"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                    <div class="h4 mb-3">🛠️</div>
+                    <h5 class="fw-800 text-white">Technical Issues</h5>
+                    <ul class="list-unstyled" style="font-size: 0.85rem; color: var(--text-muted);">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none transition-all"
+                                style="opacity: 0.8;">Browser compatibility</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none transition-all"
+                                style="opacity: 0.8;">App notifications</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

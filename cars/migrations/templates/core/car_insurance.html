@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Car Insurance | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="loan-page-header text-center text-lg-start mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="badge bg-success px-3 py-2 rounded-pill mb-3 fw-800">VAULT PROTECTION</span>
+                <h1 class="display-4 fw-900 mb-4 text-white">Precision Coverage.<br><span class="text-accent">Ultimate
+                        Peace.</span></h1>
+                <p class="lead mb-4 text-muted">Secure your investment with tailored insurance plans from top-tier
+                    providers. We provide comprehensive protection designed specifically for elite vehicles.</p>
+                <div class="d-flex flex-wrap gap-4 mb-4 justify-content-center justify-content-lg-start">
+                    <div class="stat-item d-flex align-items-center gap-3">
+                        <div class="h3 m-0 text-accent">🛡️</div>
+                        <div class="smallest text-white text-uppercase fw-800">Zero Dep Cover</div>
+                    </div>
+                    <div class="stat-item border-start ps-4 d-flex align-items-center gap-3"
+                        style="border-color: var(--glass-border) !important;">
+                        <div class="h3 m-0 text-accent">🚀</div>
+                        <div class="smallest text-white text-uppercase fw-800">Quick Claims</div>
+                    </div>
+                    <div class="stat-item border-start ps-4 d-flex align-items-center gap-3"
+                        style="border-color: var(--glass-border) !important;">
+                        <div class="h3 m-0 text-accent">📍</div>
+                        <div class="smallest text-white text-uppercase fw-800">Global Assistance</div>
+                    </div>
+                </div>
+                <a href="{% url 'core:insurance_quote' %}"
+                    class="btn btn-success rounded-pill px-5 py-3 fw-800 shadow-lg">GET A QUOTE</a>
+            </div>
+            <div class="col-lg-5 text-center mt-5 mt-lg-0">
+                <div class="hero-icon-display p-5 h1 m-0" style="font-size: 8rem; opacity: 0.8;">🔒</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insurance Plans Grid -->
+    <h2 class="fw-900 text-white text-center mb-5">Select Your Shield</h2>
+    <div class="row g-4 mb-5">
+        <!-- Basic Plan -->
+        <div class="col-md-4">
+            <div class="calc-card p-4 text-center">
+                <div class="h1 mb-4">🥉</div>
+                <h4 class="fw-800 text-white mb-3">Third Party</h4>
+                <p class="text-muted small mb-4">Essential legal protection for your vehicle against external
+                    liabilities.</p>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Legal Liability
+                        Cover</li>
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Property Damage
+                    </li>
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Mandatory by Law
+                    </li>
+                </ul>
+                <div class="h3 fw-900 text-accent mt-auto">Basic</div>
+            </div>
+        </div>
+        <!-- Standard Plan -->
+        <div class="col-md-4">
+            <div class="calc-card p-4 text-center border-accent" style="border-width: 2px;">
+                <div class="h1 mb-4">🥈</div>
+                <h4 class="fw-800 text-white mb-3">Comprehensive</h4>
+                <p class="text-muted small mb-4">The gold standard for vehicle safety, covering own damage and theft.
+                </p>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Theft & Accident
+                        Cover</li>
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Natural Calamities
+                    </li>
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Personal Accident
+                        Cover</li>
+                </ul>
+                <div class="h3 fw-900 text-accent mt-auto">Most Popular</div>
+            </div>
+        </div>
+        <!-- Premium Plan -->
+        <div class="col-md-4">
+            <div class="calc-card p-4 text-center">
+                <div class="h1 mb-4">🥇</div>
+                <h4 class="fw-800 text-white mb-3">Zero Depreciation</h4>
+                <p class="text-muted small mb-4">Full coverage without factoring in parts wear and tear over time.</p>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Full Parts
+                        Replacement</li>
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Engine Protection
+                    </li>
+                    <li class="mb-2 smallest text-white"><i class="fas fa-check text-accent me-2"></i>Consumables Add-on
+                    </li>
+                </ul>
+                <div class="h3 fw-900 text-accent mt-auto">Elite Choice</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="calc-card p-5 mb-5">
+        <h2 class="fw-900 text-white mb-5 text-center">The Vault Advantage</h2>
+        <div class="row g-5">
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="h1 mb-3">⚡</div>
+                <h5 class="fw-800 text-white">Instant Issuance</h5>
+                <p class="smallest text-muted">Get your policy digitally in less than 2 minutes.</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="h1 mb-3">🛠️</div>
+                <h5 class="fw-800 text-white">Network Garages</h5>
+                <p class="smallest text-muted">Access over 5000+ premium cashless workshops.</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="h1 mb-3">📞</div>
+                <h5 class="fw-800 text-white">24/7 Support</h5>
+                <p class="smallest text-muted">Dedicated concierge for claims and assistance.</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="h1 mb-3">💎</div>
+                <h5 class="fw-800 text-white">No Claim Bonus</h5>
+                <p class="smallest text-muted">Transfer your existing NCB and save up to 50%.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{% url 'core:insurance_quote' %}"
+            class="btn btn-primary rounded-pill px-5 py-3 fw-900 shadow-lg h5 mb-0">START YOUR QUOTE NOW</a>
+    </div>
+</div>
+
+{% endblock %}

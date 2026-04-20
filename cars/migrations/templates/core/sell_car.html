@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Sell Your Car | Vehicle Vault{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="glass-card mb-5 overflow-hidden"
+        style="background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 30px;">
+        <div class="row g-0 align-items-center">
+            <div class="col-lg-6 p-4 p-md-5">
+                <span class="badge bg-danger px-3 py-2 rounded-pill mb-4 fw-800">PREMIUM SELLING GENIUS</span>
+                <h1 class="display-4 fw-900 text-white mb-4">Sell to the Vault.<br><span class="text-accent">Zero
+                        Effort.</span></h1>
+                <p class="lead text-muted mb-5">Experience the industry's most refined car selling process. We buy elite
+                    vehicles directly, offering premium market rates and instant settlements.</p>
+
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                    <a href="{% url 'core:car_valuation' %}"
+                        class="btn btn-danger rounded-pill px-5 py-3 fw-900 shadow-lg">START VALUATION</a>
+                    <a href="#how-it-works" class="btn btn-outline-light rounded-pill px-5 py-3 fw-800">LEARN
+                        PROCESS</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="sell-hero-visual h-100"
+                    style="background: linear-gradient(45deg, rgba(127, 29, 29, 0.9), rgba(69, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80'); background-size: cover; background-position: center; min-height: 500px; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-center p-5 backdrop-blur-sm bg-black/20 rounded-4 border border-white/10 m-4">
+                        <div class="h5 fw-800 text-white/50 text-uppercase mb-2">Instant Liquidity</div>
+                        <div class="display-3 fw-900 text-white mb-2">₹ 500 Cr+</div>
+                        <div class="smallest text-muted text-uppercase fw-800 tracking-widest">Payouts Processed This
+                            Year</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Sell to Us (Benefits) -->
+    <div class="row g-4 mb-5" id="how-it-works">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-900 text-white">The Vault Advantage</h2>
+            <p class="text-muted">Why elite sellers choose our direct-buy program</p>
+        </div>
+        <div class="col-md-4">
+            <div class="calc-card p-4 h-100 text-center hover-lift">
+                <div class="display-4 mb-3 text-accent"><i class="fas fa-bolt"></i></div>
+                <h4 class="fw-800 text-white mb-3">Instant Payment</h4>
+                <p class="text-muted small">Funds are transferred to your bank account within 60 minutes of the final
+                    deal closure.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="calc-card p-4 h-100 text-center hover-lift">
+                <div class="display-4 mb-3 text-accent"><i class="fas fa-shield-alt"></i></div>
+                <h4 class="fw-800 text-white mb-3">Zero Commission</h4>
+                <p class="text-muted small">No hidden fees or brokerage. The valuation we offer is exactly what you get
+                    paid.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="calc-card p-4 h-100 text-center hover-lift">
+                <div class="display-4 mb-3 text-accent"><i class="fas fa-home"></i></div>
+                <h4 class="fw-800 text-white mb-3">Doorstep Inspection</h4>
+                <p class="text-muted small">Our experts come to you. Free professional inspection at your home or
+                    office.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documents Required -->
+    <div class="glass-card p-5 mb-5 rounded-4"
+        style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <h2 class="fw-900 text-white mb-4">Documents for a <span class="text-accent">Smooth Transfer</span></h2>
+                <p class="text-muted mb-4">Keep these ready to ensure a 24-hour closure of your sale.</p>
+                <div class="doc-list">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-circle bg-success shadow-lg p-2"
+                            style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check text-white smallest"></i>
+                        </div>
+                        <span class="fw-700 text-white-50">Registration Certificate (RC)</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-circle bg-success shadow-lg p-2"
+                            style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check text-white smallest"></i>
+                        </div>
+                        <span class="fw-700 text-white-50">Valid Insurance Policy</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-circle bg-success shadow-lg p-2"
+                            style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check text-white smallest"></i>
+                        </div>
+                        <span class="fw-700 text-white-50">Aadhaar & PAN Card</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-success shadow-lg p-2"
+                            style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check text-white smallest"></i>
+                        </div>
+                        <span class="fw-700 text-white-50">Spare Key & Owner's Manual</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 mt-5 mt-lg-0">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="p-4 rounded-4 text-center"
+                            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                            <div class="h3 fw-900 text-white mb-1">24h</div>
+                            <div class="smallest text-muted text-uppercase fw-800">Avg. Closure Time</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-4 rounded-4 text-center"
+                            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                            <div class="h3 fw-900 text-white mb-1">0%</div>
+                            <div class="smallest text-muted text-uppercase fw-800">Commission Fee</div>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center py-4 rounded-4 mt-3"
+                        style="background: linear-gradient(to right, rgba(220, 38, 38, 0.1), transparent); border: 1px dashed var(--accent);">
+                        <p class="text-muted m-0 small">Did you know? Cars with a full service history fetch <strong
+                                class="text-white">15% higher</strong> valuation in the Vault.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <h2 class="fw-900 text-white text-center mb-5">Frequently Asked Questions</h2>
+            <div class="accordion accordion-flush" id="sellFaqs">
+                <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How do you calculate my car's value?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#sellFaqs">
+                        <div class="accordion-body text-muted bg-dark/50 p-4">
+                            We use a real-time data engine that analyzes thousands of recent transactions, current
+                            demand for your specific trim, and the physical condition verified during the Vault
+                            inspection.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq2">
+                            What if my car has an active loan?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#sellFaqs">
+                        <div class="accordion-body text-muted bg-dark/50 p-4">
+                            No problem! We assist in the loan foreclosure process. We pay off the remaining balance to
+                            the bank and transfer the surplus amount to you instantly.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-transparent border-0 mb-3 shadow-sm rounded-4 overflow-hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-dark text-white fw-800 p-4 border-0" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Is the home inspection really free?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#sellFaqs">
+                        <div class="accordion-body text-muted bg-dark/50 p-4">
+                            Absolutely. There are no charges for the inspection, even if you decide not to sell after
+                            receiving our final offer.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final CTA -->
+    <div class="text-center py-5 rounded-5 shadow-2xl"
+        style="background: radial-gradient(circle at top, rgba(127, 29, 29, 0.2), transparent);">
+        <h2 class="fw-900 text-white mb-3">Ready to Convert Your Car to Cash?</h2>
+        <p class="text-muted mb-5">Join 50,000+ happy sellers who chose the professional way.</p>
+        <a href="{% url 'core:car_valuation' %}"
+            class="btn btn-danger btn-lg rounded-pill px-5 py-3 fw-900 shadow-lg hover-lift">GET MY INSTANT QUOTE</a>
+    </div>
+</div>
+
+<style>
+    .hover-lift {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-10px);
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(220, 38, 38, 0.1) !important;
+        color: var(--accent) !important;
+    }
+
+    .accordion-button::after {
+        filter: invert(1);
+    }
+
+    .text-accent {
+        color: var(--accent) !important;
+    }
+
+    .smallest {
+        font-size: 0.75rem;
+    }
+</style>
+{% endblock %}

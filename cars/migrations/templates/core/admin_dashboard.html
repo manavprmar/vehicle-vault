@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block title %}Admin Control | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="dashboard-container">
+    <div class="section-header">
+        <div class="badge bg-danger-subtle text-danger mb-3"
+            style="border-radius: 20px; padding: 8px 20px; font-weight: 600; letter-spacing: 1px;">TOTAL SYSTEM CONTROL
+        </div>
+        <h2 class="text-white">Administrative Dashboard</h2>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="dashboard-card h-100 p-5 shadow-lg text-center"
+                style="background: var(--bg-card); border-radius: 32px; border: 1px solid var(--glass-border); transition: var(--transition);">
+                <div class="fs-1 mb-3"><i class="fas fa-users text-danger"></i></div>
+                <h3 class="fw-800 mb-2">Manage Users</h3>
+                <p class="text-muted small mb-4">Oversee all registered accounts, roles, and platform permissions.</p>
+                <a href="{% url 'core:manage_users' %}" class="login-btn w-100 py-3" style="font-weight: 700;">Open Console</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="dashboard-card h-100 p-5 shadow-lg text-center"
+                style="background: var(--bg-card); border-radius: 32px; border: 1px solid var(--glass-border); transition: var(--transition);">
+                <div class="fs-1 mb-3"><i class="fas fa-car-side text-primary"></i></div>
+                <h3 class="fw-800 mb-2">Global Inventory</h3>
+                <p class="text-muted small mb-4">Detailed oversight of every vehicle listing currently live in the vault.</p>
+                <a href="{% url 'cars:inventory' %}" class="login-btn w-100 py-3" style="font-weight: 700;">Manage Fleet</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="dashboard-card h-100 p-5 shadow-lg text-center"
+                style="background: var(--bg-card); border-radius: 32px; border: 1px solid var(--glass-border); transition: var(--transition);">
+                <div class="fs-1 mb-3"><i class="fas fa-calendar-check text-success"></i></div>
+                <h3 class="fw-800 mb-2 text-white">Test Drive Control</h3>
+                <p class="small mb-4" style="color: var(--text-muted);">Admins can review and approve test-drive requests for all listed cars.</p>
+                <a href="{% url 'cars:test_drives' %}" class="login-btn w-100 py-3" style="font-weight: 700;">Manage Requests</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 p-4 rounded-4" style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-800 m-0 text-white" style="font-size: 1.5rem;">Test Drive Requests</h3>
+            <a href="{% url 'cars:test_drives' %}" class="btn btn-sm btn-outline-light rounded-pill px-4">View All</a>
+        </div>
+
+        {% if test_drives %}
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="text-secondary small text-uppercase">
+                        <tr>
+                            <th>Vehicle</th>
+                            <th>Seller</th>
+                            <th>Buyer</th>
+                            <th>Proposed Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for drive in test_drives %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-white">{{ drive.listing.car.brand }} {{ drive.listing.car.model }}</div>
+                                <div class="smallest text-muted">{{ drive.listing.car.vin }}</div>
+                            </td>
+                            <td class="small">{{ drive.listing.seller.name|default:drive.listing.seller.email }}</td>
+                            <td class="small">{{ drive.buyer.name|default:drive.buyer.email }}</td>
+                            <td class="small">{{ drive.proposed_date|date:"M d, Y" }}</td>
+                            <td>
+                                <span class="badge rounded-pill px-3 {% if drive.status == 'Confirmed' %}bg-success{% elif drive.status == 'Cancelled' %}bg-danger{% elif drive.status == 'Completed' %}bg-primary{% else %}bg-warning text-dark{% endif %}">
+                                    {% if drive.status == 'Confirmed' %}Approved{% else %}{{ drive.status }}{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% if drive.status == 'Pending' %}
+                                    <a href="{% url 'cars:update_test_drive_status' drive.test_drive_id 'Confirmed' %}" class="btn btn-sm btn-success rounded-pill px-3">Approve</a>
+                                    <a href="{% url 'cars:update_test_drive_status' drive.test_drive_id 'Cancelled' %}" class="btn btn-sm btn-danger rounded-pill px-3">Reject</a>
+                                    {% elif drive.status == 'Confirmed' %}
+                                    <a href="{% url 'cars:update_test_drive_status' drive.test_drive_id 'Completed' %}" class="btn btn-sm btn-primary rounded-pill px-3">Complete</a>
+                                    {% else %}
+                                    <a href="{% url 'cars:test_drives' %}" class="btn btn-sm btn-outline-light rounded-pill px-3">Open</a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted mb-0">No test drive requests are waiting for review.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-5 p-4 rounded-4" style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-800 m-0 text-white" style="font-size: 1.5rem;">System Transactions</h3>
+            <span class="badge bg-primary rounded-pill px-3">{{ purchases.count }} Total</span>
+        </div>
+
+        {% if purchases %}
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="text-secondary small text-uppercase">
+                        <tr>
+                            <th>ID</th>
+                            <th>Vehicle</th>
+                            <th>Seller</th>
+                            <th>Buyer</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for purchase in purchases %}
+                            <tr>
+                                <td class="small">{{ purchase.purchase_id|stringformat:".6s" }}</td>
+                                <td>
+                                    <div class="fw-bold text-white">{{ purchase.car.brand }} {{ purchase.car.model }}</div>
+                                    <div class="smallest text-muted">{{ purchase.car.vin }}</div>
+                                </td>
+                                <td><div class="small">{{ purchase.car.seller.name|default:purchase.car.seller.email }}</div></td>
+                                <td><div class="small">{{ purchase.user.name|default:purchase.user.email }}</div></td>
+                                <td class="fw-bold text-accent">&#8377;{{ purchase.price }}</td>
+                                <td>{{ purchase.payment_method }}</td>
+                                <td class="small">{{ purchase.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted mb-0">No transactions recorded in the vault yet.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-5 p-4 rounded-4" style="background: var(--bg-card); border: 1px solid var(--glass-border);">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-800 m-0 text-white" style="font-size: 1.5rem;">System Activity Log</h3>
+            <span class="badge bg-danger rounded-pill px-3 py-2 smallest fw-700">LIVE FEED</span>
+        </div>
+        <div class="activity-feed custom-scrollbar" style="max-height: 400px; overflow-y: auto;">
+            {% for log in activities %}
+            <div class="d-flex gap-3 mb-3 pb-3" style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <div class="mt-1" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 6px;"></div>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="text-white small fw-700">{{ log.action_type }}</div>
+                        <div class="smallest text-white-50">{{ log.timestamp|timesince }} ago</div>
+                    </div>
+                    <div class="smallest text-white-50 mt-1">{{ log.description }}</div>
+                    <div class="smallest text-accent opacity-75">{{ log.user.name|default:log.user.email }}</div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-5">
+                <p class="text-muted mb-0">No system activity logs recorded yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background: radial-gradient(circle at top, #0f172a 0%, #020617 60%);
+        color: #e2e8f0;
+    }
+
+    .receipt-shell { padding: 64px 0; }
+    .receipt-card {
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        box-shadow: 0 36px 80px rgba(2, 6, 23, 0.6);
+        overflow: hidden;
+    }
+    .receipt-hero {
+        padding: 36px 40px;
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.16), rgba(59, 130, 246, 0.16));
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .check-badge {
+        width: 78px;
+        height: 78px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(34, 197, 94, 0.18);
+        border: 2px solid rgba(34, 197, 94, 0.8);
+        color: white;
+        font-size: 2rem;
+    }
+    .receipt-section { padding: 32px 40px; }
+    .vehicle-block {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 20px;
+    }
+    .vehicle-image {
+        width: 180px;
+        height: 110px;
+        border-radius: 16px;
+        background: rgba(2, 6, 23, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+    .vehicle-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .receipt-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+    }
+    .receipt-stat {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 18px;
+        padding: 18px;
+    }
+    .receipt-label {
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 6px;
+    }
+    .receipt-value {
+        color: white;
+        font-size: 1.04rem;
+        font-weight: 700;
+        word-break: break-word;
+    }
+    .ledger-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .amount-main {
+        color: #60a5fa;
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+    .timeline-stack {
+        display: grid;
+        gap: 16px;
+    }
+    .timeline-item {
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        gap: 16px;
+        align-items: start;
+        padding: 18px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.02);
+    }
+    .timeline-dot {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        border: 2px solid rgba(148, 163, 184, 0.3);
+        color: #94a3b8;
+        background: rgba(15, 23, 42, 0.85);
+    }
+    .timeline-item.is-complete .timeline-dot {
+        border-color: rgba(34, 197, 94, 0.8);
+        background: rgba(34, 197, 94, 0.18);
+        color: white;
+    }
+    .timeline-item.is-current .timeline-dot {
+        border-color: rgba(59, 130, 246, 0.8);
+        background: rgba(59, 130, 246, 0.18);
+        color: white;
+    }
+    .timeline-title {
+        color: white;
+        font-size: 1rem;
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+    .timeline-meta {
+        color: #94a3b8;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 8px;
+    }
+    .timeline-copy {
+        color: #cbd5e1;
+        margin: 0;
+    }
+    @media print {
+        .receipt-actions { display: none !important; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="receipt-shell">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9">
+                <div class="receipt-card">
+                    <div class="receipt-hero text-center text-md-start">
+                        <div class="d-md-flex justify-content-between align-items-center gap-4">
+                            <div class="d-md-flex align-items-center gap-4">
+                                <div class="check-badge mb-3 mb-md-0">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h1 class="text-white fw-bold mb-2">Purchase Receipt</h1>
+                                    <p class="text-white-50 mb-0">Your payment has been recorded and the vehicle order is now confirmed in the system.</p>
+                                </div>
+                            </div>
+                            <div class="mt-3 mt-md-0 text-md-end">
+                                <div class="receipt-label">Receipt ID</div>
+                                <div class="receipt-value">{{ purchase.purchase_id|upper }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="receipt-section">
+                        <div class="vehicle-block">
+                            <div class="vehicle-image">
+                                {% if purchase.car.car_image %}
+                                <img src="{{ purchase.car.car_image.url }}" alt="{{ purchase.car.brand }} {{ purchase.car.model }}">
+                                {% else %}
+                                <i class="fas fa-car-side fa-3x text-white-50"></i>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h3 class="text-white fw-bold mb-2">{{ purchase.car.brand }} {{ purchase.car.model }}</h3>
+                                <div class="text-white-50 mb-1">VIN: {{ purchase.car.vin }}</div>
+                                <div class="text-white-50">Launch Year: {{ purchase.car.launch_year }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="receipt-section pt-0">
+                        <div class="receipt-grid">
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Buyer</div>
+                                <div class="receipt-value">{{ purchase.user.name|default:purchase.user.email }}</div>
+                            </div>
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Payment Method</div>
+                                <div class="receipt-value">{{ purchase.payment_method }}</div>
+                            </div>
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Payment Status</div>
+                                <div class="receipt-value">{{ purchase.payment_status }}</div>
+                            </div>
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Created On</div>
+                                <div class="receipt-value">{{ purchase.created_at|date:"d M Y, h:i A" }}</div>
+                            </div>
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Contact Number</div>
+                                <div class="receipt-value">{{ purchase.contact_number|default:"Not provided" }}</div>
+                            </div>
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Shipping Address</div>
+                                <div class="receipt-value">{{ purchase.shipping_address|default:"Pickup / address not provided" }}</div>
+                            </div>
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Gateway Order ID</div>
+                                <div class="receipt-value">{{ purchase.razorpay_order_id|default:"Not available" }}</div>
+                            </div>
+                            <div class="receipt-stat">
+                                <div class="receipt-label">Gateway Payment ID</div>
+                                <div class="receipt-value">{{ purchase.razorpay_payment_id|default:"Pending gateway capture" }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="receipt-section pt-0">
+                        <h4 class="text-white fw-bold mb-3">Order Timeline</h4>
+                        <div class="timeline-stack">
+                            {% for step in timeline %}
+                            <div class="timeline-item {% if step.completed %}is-complete{% elif step.current %}is-current{% endif %}">
+                                <div class="timeline-dot">
+                                    {% if step.completed %}
+                                    <i class="fas fa-check"></i>
+                                    {% elif step.current %}
+                                    <i class="fas fa-clock"></i>
+                                    {% else %}
+                                    {{ forloop.counter }}
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <div class="timeline-title">{{ step.title }}</div>
+                                    <div class="timeline-meta">
+                                        {% if step.timestamp %}
+                                        {{ step.timestamp|date:"d M Y, h:i A" }}
+                                        {% elif step.current %}
+                                        In Progress
+                                        {% else %}
+                                        Pending
+                                        {% endif %}
+                                    </div>
+                                    <p class="timeline-copy">{{ step.description }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="receipt-section pt-0">
+                        <h4 class="text-white fw-bold mb-3">Payment Summary</h4>
+                        <div class="ledger-row">
+                            <span class="text-white-50">Vehicle Price</span>
+                            <strong class="text-white">&#8377;{{ purchase.price|floatformat:0 }}</strong>
+                        </div>
+                        <div class="ledger-row">
+                            <span class="text-white-50">Amount Paid Now</span>
+                            <strong class="amount-main">&#8377;{{ amount_paid_now|floatformat:0 }}</strong>
+                        </div>
+                        <div class="ledger-row">
+                            <span class="text-white-50">Token Booking</span>
+                            <strong class="{% if purchase.is_token_booking %}text-success{% else %}text-white{% endif %}">{% if purchase.is_token_booking %}Yes{% else %}No{% endif %}</strong>
+                        </div>
+                        <div class="ledger-row">
+                            <span class="text-white-50">EMI Enabled</span>
+                            <strong class="{% if purchase.is_emi %}text-warning{% else %}text-white{% endif %}">{% if purchase.is_emi %}Yes{% else %}No{% endif %}</strong>
+                        </div>
+                        {% if purchase.is_emi %}
+                        <div class="ledger-row">
+                            <span class="text-white-50">Down Payment</span>
+                            <strong class="text-white">&#8377;{{ purchase.down_payment|floatformat:0 }}</strong>
+                        </div>
+                        <div class="ledger-row">
+                            <span class="text-white-50">Monthly Installment</span>
+                            <strong class="text-white">&#8377;{{ purchase.monthly_installment|floatformat:0 }}</strong>
+                        </div>
+                        <div class="ledger-row">
+                            <span class="text-white-50">EMI Duration</span>
+                            <strong class="text-white">{{ purchase.emi_months }} Months</strong>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="receipt-section pt-0">
+                        <div class="d-flex flex-wrap gap-3 receipt-actions">
+                            <a href="{% url 'cars:home' %}" class="btn btn-primary px-4 py-3 rounded-4 fw-bold">Return Home</a>
+                            <a href="{% url 'core:buyer_dashboard' %}" class="btn btn-outline-light px-4 py-3 rounded-4 fw-bold">Buyer Dashboard</a>
+                            {% if purchase.payment_status == "Completed" %}
+                            <a href="{% url 'cars:download_receipt' purchase.purchase_id %}" class="btn btn-outline-success px-4 py-3 rounded-4 fw-bold">Download Receipt</a>
+                            {% endif %}
+                            <button class="btn btn-outline-info px-4 py-3 rounded-4 fw-bold" onclick="window.print()">Print Receipt</button>
+                        </div>
+                        <div class="text-white-50 small mt-4">
+                            This receipt is generated automatically after successful payment verification and can be used as your purchase record.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if auto_receipt %}
+<script>
+    window.addEventListener('load', function () {
+        window.open("{% url 'cars:download_receipt' purchase.purchase_id %}", "_blank");
+    });
+</script>
+{% endif %}
+{% endblock %}

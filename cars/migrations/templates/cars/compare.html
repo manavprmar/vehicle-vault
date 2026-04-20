@@ -1,0 +1,285 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Executive Comparison | Vehicle Vault{% endblock %}
+
+{% block content %}
+<style>
+    .compare-container {
+        max-width: 1400px;
+        margin: 60px auto;
+        padding: 0 40px;
+    }
+
+    .comparison-card {
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        overflow: hidden;
+        transition: var(--transition);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comparison-card:hover {
+        border-color: var(--accent);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .comparison-img {
+        height: 220px;
+        background: #0b1120;
+        position: relative;
+    }
+
+    .comparison-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .remove-compare {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 35px;
+        height: 35px;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(8px);
+        transition: var(--transition);
+        text-decoration: none;
+    }
+
+    .remove-compare:hover {
+        background: #ef4444;
+        color: #fff;
+        transform: rotate(90deg);
+    }
+
+    .spec-table-container {
+        margin-top: 50px;
+        background: var(--bg-card);
+        border-radius: 32px;
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .spec-table {
+        margin-bottom: 0;
+        color: #fff;
+    }
+
+    .spec-table th {
+        background: rgba(15, 23, 42, 0.8);
+        padding: 25px 40px;
+        border-bottom: 1px solid var(--glass-border);
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .spec-table td {
+        padding: 20px 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        vertical-align: middle;
+    }
+
+    .spec-label {
+        font-weight: 700;
+        color: var(--text-muted);
+        width: 250px;
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .spec-value {
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .highlight-value {
+        color: var(--accent);
+        font-weight: 800;
+        font-size: 1.1rem;
+    }
+
+    .spec-row:hover {
+        background: rgba(56, 189, 248, 0.03);
+    }
+
+    .badge-luxury {
+        background: linear-gradient(135deg, var(--accent), var(--primary));
+        color: var(--bg-dark);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+
+</style>
+
+<div class="compare-container">
+    <div class="section-header">
+        <div class="badge-luxury mb-3 d-inline-block">PRECISION COMPARISON</div>
+        <h2>Vehicle Side-by-Side</h2>
+        <p>A comprehensive technical audit of your selected masterpieces.</p>
+    </div>
+
+    {% if cars|length >= 1 %}
+    <div class="row g-4 mb-5 justify-content-center">
+        {% for car in cars %}
+        <div class="{% if cars|length == 1 %}col-md-6{% elif cars|length == 2 %}col-md-6{% elif cars|length == 3 %}col-md-4{% else %}col-md-3{% endif %}">
+            <div class="comparison-card">
+                <div class="comparison-img">
+                    <img src="{% if car.car_image %}{{ car.car_image.url }}{% else %}{% static 'images/placeholder-car.png' %}{% endif %}" alt="{{ car.brand }}">
+                    <a href="{% url 'cars:remove_from_compare' car.id %}" class="remove-compare" title="Remove Vehicle">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                <div class="p-4 text-center">
+                    <h4 class="fw-800 mb-1">{{ car.brand }} {{ car.model }}</h4>
+                    <div class="highlight-value mb-0">&#8377;{{ car.price }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        {% if cars|length < 4 %}
+        <div class="{% if cars|length == 1 %}col-md-6{% elif cars|length == 2 %}col-md-6{% elif cars|length == 3 %}col-md-4{% else %}col-md-3{% endif %}">
+            <div class="comparison-card d-flex align-items-center justify-content-center p-5 text-center" style="border-style: dashed; background: transparent;">
+                <div>
+                    <div class="fs-1 mb-3 text-white-50"><i class="fas fa-plus-circle"></i></div>
+                    <h5 class="text-white-50">Add Another Vehicle</h5>
+                    <a href="{% url 'cars:all_cars' %}" class="btn btn-outline-accent btn-sm rounded-pill mt-2">Browse Catalog</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="spec-table-container animate__animated animate__fadeIn">
+        <table class="table spec-table">
+            <thead>
+                <tr>
+                    <th class="spec-label">Feature Matrix</th>
+                    {% for car in cars %}
+                    <th class="text-center">{{ car.model }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="spec-row">
+                    <td class="spec-label">Investment</td>
+                    {% for car in cars %}
+                    <td class="spec-value highlight-value">&#8377;{{ car.price }}</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Engine Configuration</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.engine_details|default:"V-Series Executive" }}</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Performance (HP)</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.horsepower }} HP</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Peak Torque</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.torque }} Nm</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Acceleration (0-100)</td>
+                    {% for car in cars %}
+                    <td class="spec-value text-accent fw-700">{{ car.acceleration_0_100 }}s</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Top Velocity</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.top_speed }} km/h</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Fuel Architecture</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.fuel_type }}</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Transmission</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.transmission }}</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Efficiency (Mileage)</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.mileage }} km/l</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Seating Capacity</td>
+                    {% for car in cars %}
+                    <td class="spec-value">{{ car.seating_capacity }} Adults</td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Safety Rating</td>
+                    {% for car in cars %}
+                    <td class="spec-value">
+                        <span class="badge {% if car.safety_rating == '5 Star' %}bg-success{% else %}bg-warning{% endif %} rounded-pill">
+                            {{ car.safety_rating }}
+                        </span>
+                    </td>
+                    {% endfor %}
+                </tr>
+                <tr class="spec-row">
+                    <td class="spec-label">Curated Status</td>
+                    {% for car in cars %}
+                    <td class="spec-value">
+                        {% if car.stock > 0 %}
+                        <span class="text-success"><i class="fas fa-check-circle me-1"></i> In Vault</span>
+                        {% else %}
+                        <span class="text-danger"><i class="fas fa-times-circle me-1"></i> Reserved</span>
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td class="spec-label">Action Center</td>
+                    {% for car in cars %}
+                    <td class="text-center">
+                        <a href="{% url 'cars:car_detail' car.vin %}" class="card-btn py-2 px-4 shadow-sm">View Details</a>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <div class="text-center py-5">
+        <div class="display-1 mb-4 text-white-50"><i class="fas fa-balance-scale"></i></div>
+        <h3 class="text-white">Empty Comparison Chamber</h3>
+        <p class="text-white-50 mb-5">Identify your target vehicles from our inventory to perform a forensic side-by-side analysis.</p>
+        <a href="{% url 'cars:all_cars' %}" class="hero-btn">Explore Inventory</a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

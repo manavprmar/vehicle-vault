@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Vault Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 32px;
+            color: #1f2937;
+            background: #ffffff;
+        }
+        .receipt-wrap {
+            max-width: 840px;
+            margin: 0 auto;
+            border: 1px solid #d1d5db;
+            border-radius: 16px;
+            padding: 32px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+        .brand {
+            font-size: 28px;
+            font-weight: 800;
+            color: #111827;
+        }
+        .brand span {
+            color: #2563eb;
+        }
+        .muted {
+            color: #6b7280;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 24px 0 12px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px;
+            background: #f9fafb;
+        }
+        .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+        .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            word-break: break-word;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .summary-row:last-child {
+            border-bottom: 0;
+        }
+        .total {
+            color: #065f46;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        @media print {
+            body {
+                margin: 0;
+            }
+            .receipt-wrap {
+                border: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-wrap">
+        <div class="header">
+            <div>
+                <div class="brand">VEHICLE<span>VAULT</span></div>
+                <div class="muted">Official Payment Receipt</div>
+            </div>
+            <div style="text-align: right;">
+                <div class="label">Receipt ID</div>
+                <div class="value">{{ purchase.purchase_id }}</div>
+            </div>
+        </div>
+
+        <div class="section-title">Vehicle Details</div>
+        <div class="grid">
+            <div class="card">
+                <div class="label">Vehicle</div>
+                <div class="value">{{ purchase.car.brand }} {{ purchase.car.model }}</div>
+            </div>
+            <div class="card">
+                <div class="label">VIN</div>
+                <div class="value">{{ purchase.car.vin }}</div>
+            </div>
+        </div>
+
+        <div class="section-title">Buyer and Payment</div>
+        <div class="grid">
+            <div class="card">
+                <div class="label">Buyer</div>
+                <div class="value">{{ purchase.user.name|default:purchase.user.email }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Payment Status</div>
+                <div class="value">{{ purchase.payment_status }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Payment Method</div>
+                <div class="value">{{ purchase.payment_method }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Confirmed On</div>
+                <div class="value">{{ purchase.created_at|date:"d M Y, h:i A" }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Gateway Order ID</div>
+                <div class="value">{{ purchase.razorpay_order_id|default:"Not available" }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Gateway Payment ID</div>
+                <div class="value">{{ purchase.razorpay_payment_id|default:"Not available" }}</div>
+            </div>
+        </div>
+
+        <div class="section-title">Receipt Summary</div>
+        <div class="card">
+            <div class="summary-row">
+                <span>Vehicle Price</span>
+                <strong>Rs. {{ purchase.price|floatformat:0 }}</strong>
+            </div>
+            <div class="summary-row">
+                <span>Amount Paid Now</span>
+                <strong class="total">Rs. {{ amount_paid_now|floatformat:0 }}</strong>
+            </div>
+            <div class="summary-row">
+                <span>Token Booking</span>
+                <strong>{% if purchase.is_token_booking %}Yes{% else %}No{% endif %}</strong>
+            </div>
+            <div class="summary-row">
+                <span>EMI</span>
+                <strong>{% if purchase.is_emi %}Yes{% else %}No{% endif %}</strong>
+            </div>
+            {% if purchase.is_emi %}
+            <div class="summary-row">
+                <span>Down Payment</span>
+                <strong>Rs. {{ purchase.down_payment|floatformat:0 }}</strong>
+            </div>
+            <div class="summary-row">
+                <span>Monthly Installment</span>
+                <strong>Rs. {{ purchase.monthly_installment|floatformat:0 }}</strong>
+            </div>
+            <div class="summary-row">
+                <span>EMI Months</span>
+                <strong>{{ purchase.emi_months }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="section-title">Delivery Contact</div>
+        <div class="grid">
+            <div class="card">
+                <div class="label">Contact Number</div>
+                <div class="value">{{ purchase.contact_number|default:"Not provided" }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Shipping Address</div>
+                <div class="value">{{ purchase.shipping_address|default:"Pickup / address not provided" }}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

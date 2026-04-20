@@ -1,0 +1,292 @@
+﻿{% extends 'base.html' %}
+{% block title %}Find Your New Car | Vehicle Vault{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="discovery-container">
+    <!-- Hero Section -->
+    <div class="discovery-hero text-center mb-5">
+        <div class="badge bg-primary-subtle text-primary mb-3"
+            style="border-radius: 20px; padding: 10px 25px; font-weight: 700; letter-spacing: 2px;">THE FUTURE AWAITS
+        </div>
+        <h1 class="display-3 fw-900 mb-3">Find Your Next Masterpiece</h1>
+        <p class="lead text-muted mx-auto" style="max-width: 700px;">Explore the world's most sophisticated new
+            vehicles. Filter by lifestyle, budget, or performance to find your perfect match.</p>
+
+        <!-- Master Search -->
+        <div class="search-hero-box mt-5 mx-auto shadow-2xl position-relative" style="max-width: 800px; z-index: 10;">
+            <form action="{% url 'cars:all_cars' %}" method="GET">
+                <div class="input-group p-2"
+                    style="background: rgba(255,255,255,0.96); backdrop-filter: blur(16px); border: 1px solid rgba(148,163,184,0.18); border-radius: 24px; box-shadow: 0 16px 32px rgba(15,23,42,0.06);">
+                    <span class="input-group-text bg-transparent border-0 ps-4 text-accent"><i
+                            class="fas fa-search fs-5"></i></span>
+                    <input type="text" name="q"
+                        class="form-control bg-transparent border-0 text-white py-4 master-search-input"
+                        placeholder="Search luxury brands, body styles, or features..."
+                        style="font-size: 1.1rem; outline: none; box-shadow: none;">
+                    <button type="submit" class="btn text-bg-dark px-5"
+                        style="border-radius: 18px; background: linear-gradient(135deg, var(--accent), var(--primary)) !important; border: none; font-weight: 800; font-size: 1.1rem; transition: all 0.3s ease;">Search
+                        Vault</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Shortcuts -->
+    <div class="category-grid mb-5 pb-5">
+        <a href="{% url 'cars:car_category' 'SUV' %}" class="category-card text-decoration-none">
+            <div class="fs-1 mb-3 card-icon"><i class="fas fa-mountain"></i></div>
+            <h4 class="text-white fw-800">SUVs</h4>
+            <p class="text-white-50 small mb-0 fw-600">Unmatched Power</p>
+        </a>
+
+        <a href="{% url 'cars:car_category' 'Sedan' %}" class="category-card text-decoration-none">
+            <div class="fs-1 mb-3 card-icon"><i class="fas fa-building"></i></div>
+            <h4 class="text-white fw-800">Sedans</h4>
+            <p class="text-white-50 small mb-0 fw-600">Pure Elegance</p>
+        </a>
+
+        <a href="{% url 'cars:electric_cars' %}" class="category-card text-decoration-none">
+            <div class="fs-1 mb-3 card-icon text-accent"><i class="fas fa-bolt"></i></div>
+            <h4 class="text-white fw-800">Electric</h4>
+            <p class="text-white-50 small mb-0 fw-600">Silence Reimagined</p>
+        </a>
+
+        <a href="{% url 'cars:new_cars' %}" class="category-card highlight-card text-decoration-none">
+            <div class="fs-1 mb-3 card-icon"><i class="fas fa-flag-checkered"></i></div>
+            <h4 class="text-white fw-800">2025 Fleet</h4>
+            <p class="text-white-50 small mb-0 fw-600">The Newest Arrivals</p>
+        </a>
+    </div>
+
+    <!-- Interactive Finder Section -->
+    <div class="finder-section p-4 p-md-5 mb-5 shadow-lg position-relative overflow-hidden"
+        style="background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(255,255,255,0.98)); border-radius: 40px; border: 1px solid rgba(148,163,184,0.18); box-shadow: 0 24px 48px rgba(15,23,42,0.06);">
+
+        <!-- Background Decoration -->
+        <div class="position-absolute top-0 end-0 opacity-10"
+            style="transform: translate(30%, -30%) scale(1.5); pointer-events: none;">
+            <i class="fas fa-compass fa-10x text-accent"></i>
+        </div>
+
+        <div class="row align-items-center position-relative z-1">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="badge bg-primary-subtle text-accent mb-3 rounded-pill px-3 py-2 fw-700 letter-spacing-1">
+                    ADVANCED FILTERING</div>
+                <h2 class="display-5 fw-900 mb-4 text-white">Precision Selection</h2>
+
+                <form action="{% url 'cars:all_cars' %}" method="GET" class="finder-controls pe-lg-4">
+                    <div class="mb-4 bg-dark bg-opacity-50 p-4 rounded-4 border border-secondary border-opacity-25">
+                        <label
+                            class="form-label text-white-50 small fw-800 letter-spacing-1 d-flex justify-content-between">
+                            <span>BUDGET SCALE</span>
+                            <span class="text-accent" id="budgetDisplay">â‚¹50L</span>
+                        </label>
+                        <input type="range" name="budget" class="form-range custom-range mt-2" min="10" max="200"
+                            step="5" value="50"
+                            oninput="document.getElementById('budgetDisplay').innerText = 'â‚¹' + this.value + 'L'">
+                        <div class="d-flex justify-content-between text-white-50 small mt-2 fw-600">
+                            <span>â‚¹10L</span>
+                            <span>â‚¹2Cr+</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label text-white-50 small fw-800 letter-spacing-1">FUEL
+                                PREFERENCE</label>
+                            <select name="fuel"
+                                class="form-select bg-dark bg-opacity-75 border-secondary border-opacity-50 text-white py-3"
+                                style="border-radius: 12px; font-weight: 600;">
+                                <option value="">All Types</option>
+                                <option value="Petrol">Petrol (High Octane)</option>
+                                <option value="Electric">Electric (Sustainability)</option>
+                                <option value="Hybrid">Hybrid (Efficiency)</option>
+                                <option value="Diesel">Diesel (Torque)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-white-50 small fw-800 letter-spacing-1">TRANSMISSION</label>
+                            <select name="transmission"
+                                class="form-select bg-dark bg-opacity-75 border-secondary border-opacity-50 text-white py-3"
+                                style="border-radius: 12px; font-weight: 600;">
+                                <option value="">Any</option>
+                                <option value="Automatic">Automatic (PDK/DSG)</option>
+                                <option value="Manual">Manual (Pure Control)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn w-100 py-4 fw-900 text-bg-dark"
+                        style="background: linear-gradient(135deg, var(--accent), var(--primary)) !important; border: none; border-radius: 16px; font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 10px 25px rgba(56,189,248,0.2);">DISCOVER
+                        EXACT MATCHES</button>
+                </form>
+            </div>
+            <div class="col-lg-6 text-center position-relative">
+                <div class="glow-orb position-absolute top-50 start-50 translate-middle"
+                    style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(56,189,248,0.2) 0%, rgba(0,0,0,0) 70%); z-index: -1;">
+                </div>
+                <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80"
+                    alt="Precision Selection" class="img-fluid rounded-circle shadow-2xl finder-img"
+                    style="width: 85%; aspect-ratio: 1/1; object-fit: cover; border: 4px solid rgba(56,189,248,0.22); padding: 10px; background: rgba(255,255,255,0.96);">
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Brands -->
+    <div class="brand-section text-center py-5">
+        <p class="text-muted small fw-700 mb-5 letter-spacing-1">PREMIUM PARTNERS</p>
+        <div class="d-flex flex-wrap justify-content-center gap-5 opacity-50 grayscale">
+            {% for brand in brand_showcase %}
+            <div class="brand-logo fs-4 text-white">{{ brand.name }}</div>
+            {% empty %}
+            <div class="brand-logo fs-4 text-white">VEHICLE VAULT</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .discovery-container {
+        padding: 60px 0;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Category Grid Layout */
+    .category-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+        justify-content: center;
+    }
+
+    .category-card {
+        flex: 1 1 calc(25% - 25px);
+        min-width: 250px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 247, 255, 1));
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 32px;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        padding: 40px 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.1), transparent 50%);
+        pointer-events: none;
+    }
+
+    .category-card:hover {
+        transform: translateY(-12px);
+        border-color: rgba(56, 189, 248, 0.4);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1), 0 0 20px rgba(56, 189, 248, 0.08);
+    }
+
+    .category-card:hover .card-icon {
+        transform: scale(1.1);
+        color: var(--accent);
+    }
+
+    .card-icon {
+        transition: all 0.4s ease;
+        color: var(--text-subtle);
+    }
+
+    .highlight-card {
+        background: linear-gradient(145deg, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.98) 100%);
+        border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .highlight-card .card-icon {
+        color: var(--accent);
+    }
+
+    /* Finder Hero specific input */
+    .master-search-input::placeholder {
+        color: var(--text-subtle) !important;
+        font-weight: 500;
+    }
+
+    .master-search-input:focus {
+        background: transparent !important;
+        color: var(--text-main) !important;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+        background: var(--accent);
+        box-shadow: 0 0 20px var(--accent);
+        width: 20px;
+        height: 20px;
+        margin-top: -8px;
+        /* Offset to center relative to track */
+    }
+
+    .custom-range::-webkit-slider-runnable-track {
+        background: rgba(148, 163, 184, 0.18);
+        border-radius: 10px;
+        height: 6px;
+    }
+
+    .grayscale {
+        filter: grayscale(100%);
+        transition: var(--transition);
+    }
+
+    .grayscale:hover {
+        filter: grayscale(0%);
+        opacity: 1 !important;
+    }
+
+    .letter-spacing-1 {
+        letter-spacing: 2px;
+    }
+
+    .finder-img {
+        transition: transform 1s ease;
+    }
+
+    .finder-section:hover .finder-img {
+        transform: rotate(2deg) scale(1.02);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        .category-card {
+            flex: 1 1 calc(50% - 25px);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .display-3 {
+            font-size: 2.5rem;
+        }
+
+        .display-5 {
+            font-size: 2rem;
+        }
+
+        .category-card {
+            padding: 30px 20px !important;
+            flex: 1 1 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .discovery-container {
+            padding: 40px 15px;
+        }
+    }
+</style>
+
+{% endblock %}
