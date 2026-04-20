@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Update Profile{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card bg-dark text-white border-0 shadow-lg rounded-4 mt-5">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold mb-1">Update Profile</h2>
+                    <p class="text-muted">Keep your account details up to date</p>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <h4 class="mb-3 text-accent border-bottom border-secondary pb-2">User Details</h4>
+                    {% for field in user_form %}
+                        <div class="mb-3">
+                            <label class="form-label text-white-50 small text-uppercase">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    {% if profile_form %}
+                    <h4 class="mt-4 mb-3 text-accent border-bottom border-secondary pb-2">Role Specific Details</h4>
+                    {% for field in profile_form %}
+                        <div class="mb-3">
+                            <label class="form-label text-white-50 small text-uppercase">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold text-uppercase">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
